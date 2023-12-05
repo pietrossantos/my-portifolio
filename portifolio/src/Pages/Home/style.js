@@ -38,9 +38,8 @@ export const NavTitles = styled.li`
     }
   }
   &:hover {
-    color:#38ecd7e7;
+    color: #38ecd7e7;
     text-shadow: 0 0 10px rgba(53, 168, 154, 0.906),
-                 0 0 80px rgba(53, 168, 154, 0.906),
-                 0 0 320px rgba(53, 168, 154, 0.906);
+      0 0 80px rgba(53, 168, 154, 0.906), 0 0 320px rgba(53, 168, 154, 0.906);
   }
 `;

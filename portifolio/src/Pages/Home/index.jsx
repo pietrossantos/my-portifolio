@@ -19,6 +19,7 @@ const Home = () => {
           <NavTitles>Contato</NavTitles>
         </NavPosition>
       </NavHeader>
+      <main></main>
     </>
   );
 };
