@@ -9,7 +9,7 @@ padding-bottom: 50px ;
 
 `
 
-export const BoxBody = styled.body`
+export const BoxSection = styled.div`
 display: flex;
 flex-direction: column;
 align-items: center;

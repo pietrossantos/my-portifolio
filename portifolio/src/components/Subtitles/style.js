@@ -3,7 +3,7 @@ import device from "../../devices";
 
 export const SubtitleStyle = styled.h2`
   padding: 40px 0 ;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 500;
   color: #38ecd7e7;
   font-family: 'Orbitron', sans-serif;

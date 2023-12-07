@@ -6,9 +6,9 @@ const Header = () => {
   return (
     <NavHeader>
       <Link to="/" style={{ textDecoration: "none" }}>
-        <video
-          width="180px"
-          height="180px"
+        <video style={{objectFit: "cover"}}
+          width="150px"
+          height="150px"
           src={Logo}
           alt="Logo"
           autoPlay

@@ -3,15 +3,14 @@ import MyImage from "../../assets/img/MyImage.png";
 import Subtitle from "../../components/Subtitles";
 import Paragraph from "../../components/Paragraph";
 import Form from "../../components/Form";
-import { PositionMain, BoxBody } from "./style";
+import { PositionMain, BoxSection } from "./style";
 
 const Home = () => {
   return (
-    <BoxBody>
+    <BoxSection>
       <Header />
       <PositionMain>
         <div>
-          {" "}
           <Subtitle children="Sobre Mim" />
           <Paragraph />
         </div>
@@ -22,7 +21,7 @@ const Home = () => {
         />
       </PositionMain>
       <Form />
-    </BoxBody>
+    </BoxSection>
   );
 };
 

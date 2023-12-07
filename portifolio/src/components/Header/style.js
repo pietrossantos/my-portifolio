@@ -16,7 +16,7 @@ export const NavPosition = styled.ul`
   width: 820px;
 `;
 export const NavTitles = styled.li`
-  font-size: 32px;
+  font-size: 24px;
   cursor: pointer;
   transition: 0.35s linear;
   color: transparent;

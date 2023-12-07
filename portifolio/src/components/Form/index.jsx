@@ -78,13 +78,12 @@ const Form = () => {
   return (
     <>
       <FormDeddy
-        action="https://formsubmit.co/pietrosilva.0305@gmail.com"
         method="POST"
         onSubmit={handleSubmit(sendEmail)}
       >
-        <h2>
+        
           <Subtitles> Fale Comigo </Subtitles>
-        </h2>
+  
         <FormContainer>
           <div>
             <Input
