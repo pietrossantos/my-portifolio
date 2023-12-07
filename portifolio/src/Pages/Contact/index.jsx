@@ -1,9 +1,10 @@
 
+import Header from "../../components/Header";
 
 const Paragraph = () => {
     return (
       <>
-       
+       <Header />
       </>
     );
   };

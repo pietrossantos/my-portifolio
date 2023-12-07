@@ -13,6 +13,17 @@ export const GlobalStyle = createGlobalStyle`
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      background-color: #0a0d1c;
+
+    }
+    ::-webkit-scrollbar {
+        width: 5px;
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 30px;
+        background: linear-gradient( #0a0d1c,#3A90A0,#38ecd7e7, transparent);
     }
 
 `;

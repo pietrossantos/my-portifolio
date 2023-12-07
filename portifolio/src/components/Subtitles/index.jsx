@@ -1,12 +1,11 @@
 import React from "react";
-import { SubtitleStyle, Strong } from "./style";
+import { SubtitleStyle} from "./style";
 
-const Subtitle = ({ children, strong, newChildren }) => {
+const Subtitle = ({ children, newChildren }) => {
   return (
     <>
       <SubtitleStyle>
         {children}
-        <Strong>{strong}</Strong>
         {newChildren}
       </SubtitleStyle>
     </>

@@ -1,26 +1,28 @@
-import { NavHeader, NavPosition, NavTitles } from "./style";
+import Header from "../../components/Header";
+import MyImage from "../../assets/img/MyImage.png";
+import Subtitle from "../../components/Subtitles";
+import Paragraph from "../../components/Paragraph";
+import Form from "../../components/Form";
+import { PositionMain, BoxBody } from "./style";
 
 const Home = () => {
   return (
-    <>
-      <NavHeader>
-        <video
-          width="180px"
-          height="180px"
-          src="../../../public/Logo.mp4"
-          autoPlay
-          loop
-          muted
+    <BoxBody>
+      <Header />
+      <PositionMain>
+        <div>
+          {" "}
+          <Subtitle children="Sobre Mim" />
+          <Paragraph />
+        </div>
+        <img
+          style={{ width: "300px", borderRadius: "15px" }}
+          src={MyImage}
+          alt="MyImage"
         />
-        <NavPosition>
-          <NavTitles>Início</NavTitles>
-          <NavTitles>Projetos</NavTitles>
-          <NavTitles>Skills</NavTitles>
-          <NavTitles>Contato</NavTitles>
-        </NavPosition>
-      </NavHeader>
-      <main></main>
-    </>
+      </PositionMain>
+      <Form />
+    </BoxBody>
   );
 };
 
