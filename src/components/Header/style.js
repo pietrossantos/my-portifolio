@@ -6,6 +6,9 @@ export const NavHeader = styled.nav`
   align-items: center;
   height: 100%;
   background-color: #0a0d1c;
+  video {
+    object-fit: cover;
+  }
 `;
 
 export const NavPosition = styled.ul`
@@ -31,7 +34,7 @@ export const NavTitles = styled.li`
   background-size: 200%;
   background-clip: text;
   animation: move 30s linear infinite;
-  
+
   @keyframes move {
     100% {
       background-position: 1000px 0;
@@ -40,7 +43,6 @@ export const NavTitles = styled.li`
   &:hover {
     color: #38ecd7e7;
     text-shadow: 0 0 10px rgba(53, 168, 154, 0.906),
-                 0 0 80px rgba(53, 168, 154, 0.906),
-                 0 0 320px rgba(53, 168, 154, 0.906);
+      0 0 80px rgba(53, 168, 154, 0.906), 0 0 320px rgba(53, 168, 154, 0.906);
   }
 `;

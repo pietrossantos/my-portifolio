@@ -37,14 +37,15 @@ export const FormDeddy = styled.form`
   &::before {
     content: "";
     position: absolute;
-    width: 100px;
+    width: 150px;
     height: 200%;
     background: linear-gradient(
       to left,
+      #000000,
       #38ecd7e7,
       #64eded,
-      #000000,
-      #01010101
+      #01010101, 
+      transparent
     );
     animation: animate 15s linear infinite;
   }
@@ -103,26 +104,4 @@ export const Area = styled.textarea`
   }
 `;
 
-export const SendButton = styled.button`
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  height: 78px;
-  border: none;
-  background-color: #38ecd7e7;
-  opacity: 0.34;
-  font-family: "Orbitron", sans-serif;
-  font-size: 20px;
-  font-weight: 400;
-  color: #000000;
-  border-radius: 8px;
 
-  &:hover {
-    cursor: pointer;
-    transform: rotate3d(1, 0, 0, 360deg);
-    transition: 1.5s ease-in-out;
-    color: #fffefeff;
-    opacity: 1;
-  }
-`;

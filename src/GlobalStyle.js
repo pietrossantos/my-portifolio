@@ -14,6 +14,7 @@ export const GlobalStyle = createGlobalStyle`
       padding: 0;
       box-sizing: border-box;
       background-color: #0a0d1c;
+      
 
     }
     ::-webkit-scrollbar {

@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <NavHeader>
       <Link to="/" style={{ textDecoration: "none" }}>
-        <video style={{objectFit: "cover"}}
+        <video 
           width="150px"
           height="150px"
           src={Logo}

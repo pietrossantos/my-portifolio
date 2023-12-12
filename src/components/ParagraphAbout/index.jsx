@@ -1,5 +1,5 @@
 import { Text } from "./style";
-const Paragraph = () => {
+const ParagraphAbout = () => {
   return (
     <>
       <Text>
@@ -12,4 +12,4 @@ const Paragraph = () => {
   );
 };
 
-export default Paragraph;
+export default ParagraphAbout;

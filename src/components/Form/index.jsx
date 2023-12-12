@@ -1,11 +1,11 @@
 import React from "react";
 import Subtitles from "../Subtitles";
+import Button from "../Button";
 import {
   FormDeddy,
   FormContainer,
   Input,
   Area,
-  SendButton,
   Span,
 } from "./style";
 import { useForm } from "react-hook-form";
@@ -43,10 +43,9 @@ const Form = () => {
       };
 
       const result = await emailjs.send(
-        "service_ecqg2zp",
-        "template_3j2eao9",
-        emailData,
-        "sjtfv0XpePnib5IsT"
+        "service_fpz92le",
+        "template_8082bd8",      emailData,
+        "lumHRW6doBVW8kgam"
       );
 
       toast("😊 Formulário enviado com sucesso!", {
@@ -134,9 +133,9 @@ const Form = () => {
           </div>
         </FormContainer>
 
-        <SendButton style={{ width: "350px" }} type="submit">
+        <Button style={{ width: "350px" }} type="submit">
           Enviar
-        </SendButton>
+        </Button>
       </FormDeddy>
       <ToastContainer />
     </>
