@@ -2,8 +2,8 @@ import { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
      @font-face{
       font-family: 'Mokoto'; 
-      src: url('../src/assets/fonts/Mokoto Glitch Mark 2.ttf') format('truetype'), 
-      url('../src/assets/fontsMokoto Glitch Mark 2.otf') format('opentype');
+      src: url('../src/assets/fonts/Mokoto-Glitch-Mark_2.ttf') format('truetype'), 
+      url('../src/assets/fonts/Mokoto-Glitch-Mark_2.otf') format('opentype');
       font-weight: normal;
       font-style: normal;
       }

@@ -1,13 +1,7 @@
 import React from "react";
 import Subtitles from "../Subtitles";
 import Button from "../Button";
-import {
-  FormDeddy,
-  FormContainer,
-  Input,
-  Area,
-  Span,
-} from "./style";
+import { FormDeddy, FormContainer, Input, Area, Span } from "./style";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -44,7 +38,8 @@ const Form = () => {
 
       const result = await emailjs.send(
         "service_fpz92le",
-        "template_8082bd8",      emailData,
+        "template_8082bd8",
+        emailData,
         "lumHRW6doBVW8kgam"
       );
 
@@ -76,13 +71,9 @@ const Form = () => {
 
   return (
     <>
-      <FormDeddy
-        method="POST"
-        onSubmit={handleSubmit(sendEmail)}
-      >
-        
-          <Subtitles> Fale Comigo </Subtitles>
-  
+      <FormDeddy method="POST" onSubmit={handleSubmit(sendEmail)}>
+        <Subtitles> Fale Comigo </Subtitles>
+
         <FormContainer>
           <div>
             <Input
@@ -120,7 +111,7 @@ const Form = () => {
             {errors.subject && <Span>Digite um assunto válido</Span>}
           </div>
 
-          <div >
+          <div>
             <Area
               {...register("message")}
               name="message"
