@@ -16,8 +16,8 @@ const Hero = styled.section`
   align-items: center;
   gap: 36px;
   .eyebrow { display: inline-block; color: #75ef92; letter-spacing: .16em; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 22px; }
-  h1 { font-family: "Space Grotesk", sans-serif; font-weight: 700; text-transform: none; color: #f3fbff; font-size: clamp(2.5rem, 5.6vw, 5.2rem); line-height: 1.07; letter-spacing: -.045em; margin-bottom: 24px; }
-  h1 span { color: #7ff49c; }
+  h1 { font-family: "Oxanium", "Space Grotesk", sans-serif; font-weight: 700; text-transform: none; color: #f3fbff; font-size: clamp(2.5rem, 5.6vw, 5.2rem); line-height: 1.07; letter-spacing: -.045em; margin-bottom: 24px; }
+  h1 span { color: #7ff49c; font-weight: 800; letter-spacing: -.035em; }
   p { max-width: 570px; color: #b8cdbb; font-size: clamp(1rem, 1.4vw, 1.13rem); line-height: 1.8; }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
   .actions a { text-decoration: none; padding: 14px 22px; border-radius: 10px; font-weight: 700; transition: transform .2s, border-color .2s; }
@@ -28,7 +28,7 @@ const Hero = styled.section`
 `;
 const Section = styled.section`
   margin-top: 80px;
-  h2 { color: #f3fbff; font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 18px; }
+  h2 { font-family: "Oxanium", "Space Grotesk", sans-serif; color: #f3fbff; font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 18px; }
   p { color: #b8cdbb; line-height: 1.85; }
   .panel { border: 1px solid #285d37; background: linear-gradient(145deg, rgba(12, 40, 20, .9), rgba(6, 22, 12, .92)); border-radius: 20px; padding: clamp(22px, 4vw, 40px); }
   .about { display: grid; grid-template-columns: 1fr 160px; align-items: center; gap: 28px; }
