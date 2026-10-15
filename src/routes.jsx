@@ -5,11 +5,13 @@ import Skills from "./Pages/Skills";
 import Contact from "./Pages/Contact";
 import CommandPalette from "./components/CommandPalette";
 import NotFound from "./Pages/NotFound";
+import ScrollProgress from "./components/ScrollProgress";
 
 const RoutesApp = () => {
   return (
     <BrowserRouter>
       <CommandPalette />
+      <ScrollProgress />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Projects />} />
