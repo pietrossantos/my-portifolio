@@ -1,4 +1,3 @@
-import React from "react";
 import Subtitles from "../Subtitles";
 import Button from "../Button";
 import { FormDeddy, FormContainer, Input, Area, Span } from "./style";
@@ -9,20 +8,23 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import emailjs from "@emailjs/browser";
 
-const schema = yup
-  .object({
-    name: yup.string().required(),
-    email: yup.string().email().required(),
-    number: yup.number().min(9).required(),
-    subject: yup.string().required(),
-  })
-  .required();
+const schema = yup.object({
+  name: yup.string().trim().required("Informe seu nome"),
+  email: yup.string().trim().email("Informe um e-mail válido").required("Informe seu e-mail"),
+  number: yup.string().trim().required("Informe seu telefone")
+    .test("phone", "Informe um telefone com DDD válido", value => {
+      const digits = (value || "").replace(/\D/g, "");
+      return digits.length === 10 || digits.length === 11;
+    }),
+  subject: yup.string().trim().required("Informe o assunto"),
+  message: yup.string().trim().required("Escreva sua mensagem"),
+}).required();
 
 const Form = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm({ resolver: yupResolver(schema) });
 
@@ -36,99 +38,56 @@ const Form = () => {
         message: data.message,
       };
 
-      const result = await emailjs.send(
+      await emailjs.send(
         "service_fpz92le",
         "template_8082bd8",
         emailData,
         "lumHRW6doBVW8kgam"
       );
 
-      toast("😊 Formulário enviado com sucesso!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-
+      toast.success("Mensagem enviada com sucesso!", { theme: "dark" });
       reset();
     } catch (error) {
-      toast("❌ Erro: formulário não enviado...", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
+      toast.error("Não foi possível enviar. Tente novamente ou use o e-mail de contato.", { theme: "dark" });
     }
   };
 
   return (
     <>
-      <FormDeddy method="POST" onSubmit={handleSubmit(sendEmail)}>
-        <Subtitles> Fale Comigo </Subtitles>
-
+      <FormDeddy noValidate onSubmit={handleSubmit(sendEmail)}>
+        <Subtitles>Fale Comigo</Subtitles>
         <FormContainer>
           <div>
-            <Input
-              {...register("name", { required: true })}
-              name="name"
-              placeholder="Nome Completo"
-            />
-            {errors.name && <Span>Digite um nome válido</Span>}
+            <Input id="contact-name" aria-label="Nome completo" aria-invalid={!!errors.name}
+              autoComplete="name" {...register("name")} placeholder="Nome completo" />
+            {errors.name && <Span role="alert">{errors.name.message}</Span>}
           </div>
-
           <div>
-            <Input
-              {...register("email", { required: true })}
-              name="email"
-              placeholder="E-mail"
-            />
-            {errors.email && <Span>Digite um E-mail válido</Span>}
+            <Input id="contact-email" type="email" aria-label="E-mail" aria-invalid={!!errors.email}
+              autoComplete="email" {...register("email")} placeholder="E-mail" />
+            {errors.email && <Span role="alert">{errors.email.message}</Span>}
           </div>
-
           <div>
-            <Input
-              {...register("number", { required: true })}
-              name="number"
-              placeholder="Número de Telefone"
-            />
-            {errors.number && <Span>Digite um telefone válido</Span>}
+            <Input id="contact-phone" type="tel" aria-label="Telefone com DDD" aria-invalid={!!errors.number}
+              autoComplete="tel" {...register("number")} placeholder="Telefone com DDD" />
+            {errors.number && <Span role="alert">{errors.number.message}</Span>}
           </div>
-
           <div>
-            <Input
-              {...register("subject", { required: true })}
-              name="subject"
-              placeholder="Assunto"
-            />
-            {errors.subject && <Span>Digite um assunto válido</Span>}
+            <Input id="contact-subject" aria-label="Assunto" aria-invalid={!!errors.subject}
+              {...register("subject")} placeholder="Assunto" />
+            {errors.subject && <Span role="alert">{errors.subject.message}</Span>}
           </div>
-
           <div>
-            <Area
-              {...register("message")}
-              name="message"
-              id=""
-              cols="30"
-              rows="10"
-              placeholder="Mensagem"
-            ></Area>
-            {errors.message && <Span>Digite uma mensagem válida</Span>}
+            <Area id="contact-message" aria-label="Mensagem" aria-invalid={!!errors.message}
+              rows="6" {...register("message")} placeholder="Mensagem" />
+            {errors.message && <Span role="alert">{errors.message.message}</Span>}
           </div>
         </FormContainer>
-
-        <Button style={{ width: "350px" }} type="submit">
-          Enviar
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Enviando..." : "Enviar"}
         </Button>
       </FormDeddy>
-      <ToastContainer />
+      <ToastContainer position="top-right" autoClose={4000} />
     </>
   );
 };
