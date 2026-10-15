@@ -21,6 +21,8 @@ const Wrap = styled.main`
   .card { border: 1px solid #2a5b39; border-radius: 22px; overflow: hidden; background: linear-gradient(145deg, #102719, #07150c); box-shadow: 0 12px 40px rgba(0,0,0,.17); transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
   .card:hover { transform: translateY(-5px); border-color: #67eb8c; box-shadow: 0 18px 50px rgba(28,129,48,.15); }
   .image { display: block; width: 100%; height: 300px; object-fit: contain; object-position: center; padding: 18px; background: radial-gradient(circle at center, #15391e, #08170e 72%); border-bottom: 1px solid #285c37; transition: transform .35s ease; }\n  .card:hover .image { transform: scale(1.025); }
+  .placeholder { height: 300px; display: grid; place-items: center; text-align: center; padding: 25px; background: radial-gradient(circle at 50% 35%, #194d29, #08170e 70%); border-bottom: 1px solid #285c37; }
+  .placeholder span { font-family: "Space Grotesk", sans-serif; font-size: clamp(23px, 3vw, 36px); letter-spacing: -.035em; font-weight: 700; color: #8df7a5; }
   .content { padding: clamp(20px, 3vw, 30px); }
   .category { color: #7bf39b; font-size: 12px; letter-spacing: .07em; font-weight: 700; }
   h2 { color: #f2fbff; font-size: clamp(1.4rem, 2.4vw, 1.9rem); margin: 12px 0; }
@@ -47,14 +49,14 @@ const Projects = () => (
       <div className="grid">
         {projects.map((project) => (
           <article className="card" key={project.title}>
-            <img className="image" src={project.image} alt={`Prévia do projeto ${project.title}`} loading="lazy" />
+            {project.image ? <img className="image" src={project.image} alt={`Prévia do projeto ${project.title}`} loading="lazy" /> : <div className="placeholder" aria-hidden="true"><span>{project.title}</span></div>}
             <div className="content">
               <span className="category">{project.category}</span>
               <h2>{project.title}</h2>
               <p className="description">{project.description}</p>
               <div className="tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
               <div className="links">
-                <a className="primary" href={project.live} target="_blank" rel="noopener noreferrer" aria-label={`Abrir demonstração de ${project.title}`}>Ver projeto ↗</a>
+                {project.live && <a className="primary" href={project.live} target="_blank" rel="noopener noreferrer" aria-label={`Abrir demonstração de ${project.title}`}>Ver projeto ↗</a>}
                 <a className="secondary" href={project.github} target="_blank" rel="noopener noreferrer" aria-label={`Ver código de ${project.title} no GitHub`}>Código no GitHub ↗</a>
               </div>
             </div>
