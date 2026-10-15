@@ -81,19 +81,21 @@ const MatrixGlobe = () => {
   }
   for (let lon = 0; lon < 360; lon += 15) {
     const points = [];
-    for (let lat = -90; lat <= 90; lat += 3) points.push(project(lat, lon, rotation, tilt));
+    for (let lat = -90; lat <= 90; lat += 3) points.push(project(lat, lon, rotation, tilt, pitch));
     lines.push({ id: `lon-${lon}`, points });
   }
   const dots = Array.from({ length: 400 }, (_, i) => {
     const y = 1 - 2 * (i + .5) / 400;
-    return project(Math.asin(y) / RAD, i * 137.507764, rotation, tilt);
+    return project(Math.asin(y) / RAD, i * 137.507764, rotation, tilt, pitch);
   }).filter(p => p.z >= 0);
 
   const onMove = event => {
     if (event.pointerType === "touch") return;
     const rect = event.currentTarget.getBoundingClientRect();
     const y = (event.clientY - rect.top) / rect.height - .5;
-    setTilt(-y * .75);
+    const x = (event.clientX - rect.left) / rect.width - .5;
+    target.current.tilt = -y * 1.15;
+    target.current.pitch = x * .9;
     if (lastX.current !== null) velocity.current = Math.max(-.035, Math.min(.035, (event.clientX - lastX.current) * .002));
     lastX.current = event.clientX;
   };
