@@ -21,7 +21,7 @@ const Shell = styled.div`
   .back { opacity: .15; stroke: #288a45; }
   .point { fill: #b0ffbc; }
   .outline { fill: none; stroke: #5dff89; stroke-width: 1.4; opacity: .82; }
-  svg { cursor: grab; } svg:active { cursor: grabbing; }
+  svg { cursor: grab; touch-action: none; user-select: none; } svg:active { cursor: grabbing; }
   .label { position: absolute; bottom: 4%; left: 50%; transform: translateX(-50%); color: #6fe99a; font: 600 10px "Space Grotesk",sans-serif; letter-spacing: .23em; white-space: nowrap; pointer-events: none; }
 `;
 
@@ -54,14 +54,16 @@ const MatrixGlobe = () => {
   const target = useRef({ pitch: 0, tilt: -.16, yaw: .004 });
   const velocity = useRef(.004);
   const lastX = useRef(null);
+  const lastY = useRef(null);
+  const dragging = useRef(false);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let frame;
     let previous = 0;
     const tick = time => {
       if (time - previous >= 30) {
-        setRotation(value => value + velocity.current * Math.min((time - previous) / 16.7, 3));
+        if (!reduceMotion) setRotation(value => value + velocity.current * Math.min((time - previous) / 16.7, 3));
         setTilt(value => value + (target.current.tilt - value) * .07);
         setPitch(value => value + (target.current.pitch - value) * .07);
         previous = time;
@@ -90,18 +92,32 @@ const MatrixGlobe = () => {
   }).filter(p => p.z >= 0);
 
   const onMove = event => {
-    if (event.pointerType === "touch") return;
     const rect = event.currentTarget.getBoundingClientRect();
     const y = (event.clientY - rect.top) / rect.height - .5;
     const x = (event.clientX - rect.left) / rect.width - .5;
-    target.current.tilt = -y * 1.15;
-    target.current.pitch = x * .9;
-    if (lastX.current !== null) velocity.current = Math.max(-.035, Math.min(.035, (event.clientX - lastX.current) * .002));
+    if (dragging.current && lastX.current !== null && lastY.current !== null) {
+      const dx = event.clientX - lastX.current;
+      const dy = event.clientY - lastY.current;
+      setRotation(value => value + dx * .013);
+      target.current.tilt = Math.max(-1.2, Math.min(1.2, target.current.tilt - dy * .009));
+      target.current.pitch = Math.max(-.8, Math.min(.8, target.current.pitch + dx * .003));
+      velocity.current = Math.max(-.014, Math.min(.014, dx * .0012));
+    } else if (event.pointerType !== "touch") {
+      target.current.tilt = -y * .7;
+      target.current.pitch = x * .55;
+    }
     lastX.current = event.clientX;
+    lastY.current = event.clientY;
+  };
+  const endDrag = event => {
+    dragging.current = false;
+    lastX.current = null;
+    lastY.current = null;
+    if (event.currentTarget.hasPointerCapture?.(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
   };
 
   return (
-    <Shell onPointerMove={onMove} onPointerLeave={() => { lastX.current = null; target.current.tilt = -.16; target.current.pitch = 0; }}>
+    <Shell onPointerDown={event => { dragging.current = true; lastX.current = event.clientX; lastY.current = event.clientY; event.currentTarget.setPointerCapture(event.pointerId); }} onPointerMove={onMove} onPointerUp={endDrag} onPointerCancel={endDrag} onPointerLeave={() => { if (!dragging.current) { lastX.current = null; lastY.current = null; target.current.tilt = -.16; target.current.pitch = 0; } }}>
       <svg viewBox="0 0 400 400" role="img" aria-label="Globo Matrix tridimensional verde com linhas de coordenadas e rotação interativa">
         <defs>
           <radialGradient id="matrixSphere" cx="35%" cy="30%">
