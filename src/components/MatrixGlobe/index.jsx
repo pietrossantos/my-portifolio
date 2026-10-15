@@ -24,12 +24,12 @@ const Stage = styled.div`
   svg { width: 88%; height: 88%; overflow: visible; filter: drop-shadow(0 0 22px rgba(34, 233, 177, .25)); transition: transform .22s ease-out; }
   .globe-line { fill: none; stroke: #55f5c6; stroke-width: 1.2; opacity: .55; }
   .globe-blue { stroke: #4caaff; opacity: .35; }
-  .globe-dot { fill: #9affd6; }
+  .globe-dot { fill: #9affd6; filter: drop-shadow(0 0 3px #5bffc8); }
   .globe-ring { fill: none; stroke: #42e9c0; stroke-width: 1; opacity: .4; stroke-dasharray: 5 9; }
-  .core { fill: url(#globeCore); stroke: rgba(94, 255, 201, .7); stroke-width: 1.5; }
-  .scan { animation: pulse 3.8s ease-in-out infinite alternate; }
+  .core { fill: url(#globeCore); stroke: rgba(94, 255, 201, .7); stroke-width: 1.5; }\n  .code-particle { fill: #7affbd; font-size: 9px; font-family: monospace; opacity: .6; }
+  .scan { animation: pulse 3.8s ease-in-out infinite alternate; }\n  .orbit { animation: orbit 24s linear infinite; }\n  .orbit.two { animation: orbitTwo 32s linear infinite reverse; }\n  @keyframes orbit { from { transform: rotate(-22deg) scaleY(.76); } to { transform: rotate(338deg) scaleY(.76); } }\n  @keyframes orbitTwo { from { transform: rotate(42deg) scaleY(.84); } to { transform: rotate(402deg) scaleY(.84); } }
   @keyframes pulse { from { opacity: .3; } to { opacity: .85; } }
-  @media (prefers-reduced-motion: reduce) { svg { transition: none; } .scan { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { svg { transition: none; } .scan, .orbit { animation: none; } }
 `;
 
 const latitudes = [-64, -43, -22, 0, 22, 43, 64];
