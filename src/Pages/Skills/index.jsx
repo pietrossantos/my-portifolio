@@ -8,15 +8,15 @@ const groups = [
 ];
 const Layout = styled.main`
   width: min(1100px, calc(100% - 40px)); margin: 0 auto; padding: 64px 0 100px;
-  .eyebrow { color: #62e7b4; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; }
+  .eyebrow { color: #71f08e; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; }
   h1 { color: #f3fcff; font-size: clamp(2.5rem, 5vw, 4.5rem); margin: 14px 0; letter-spacing: -.04em; }
-  .intro { color: #b7c9d7; line-height: 1.8; max-width: 650px; margin-bottom: 42px; }
+  .intro { color: #b8cdbb; line-height: 1.8; max-width: 650px; margin-bottom: 42px; }
   .grid { display: grid; gap: 20px; }
-  section { border: 1px solid #285569; border-radius: 20px; background: linear-gradient(125deg, #0b2737, #071624); padding: clamp(22px, 4vw, 34px); }
+  section { border: 1px solid #2c613c; border-radius: 20px; background: linear-gradient(125deg, #102719, #07150c); padding: clamp(22px, 4vw, 34px); }
   h2 { font-size: clamp(1.35rem, 2.6vw, 1.8rem); margin: 0 0 8px; color: #eafaff; }
   section p { color: #8da9ba; margin: 0 0 24px; }
   ul { display: flex; gap: 12px; flex-wrap: wrap; padding: 0; margin: 0; list-style: none; }
-  li { padding: 12px 17px; border: 1px solid #356c70; border-radius: 10px; color: #9af0cd; background: rgba(27, 94, 96, .12); }
+  li { padding: 12px 17px; border: 1px solid #356c44; border-radius: 10px; color: #a0f6b3; background: rgba(27, 94, 42, .12); }
 `;
 const Skills = () => (
   <>
