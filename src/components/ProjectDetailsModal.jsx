@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
@@ -75,3 +76,15 @@ export default function ProjectDetailsModal({ project, onClose }) {
     </Overlay>
   );
 }
+
+ProjectDetailsModal.propTypes = {
+  project: PropTypes.shape({
+    category: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    live: PropTypes.string,
+    github: PropTypes.string.isRequired,
+  }),
+  onClose: PropTypes.func.isRequired,
+};
