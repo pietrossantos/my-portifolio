@@ -3,7 +3,6 @@ import khrisImage from "../../assets/img/mobile (4).png";
 import robertaImage from "../../assets/img/mobile (5).png";
 import portfolioImage from "../../assets/img/mobile (1).png";
 import githubIcon from "../../assets/img/GitHub.svg";
-import React from "react";
 import {
   BoxCases,
   CostumizeCases,
