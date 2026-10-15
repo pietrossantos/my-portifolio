@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState } from "react";
 import Header from "../../components/Header";
 import calculatorImage from "../../assets/img/mobile (3).png";
 import khrisImage from "../../assets/img/mobile (4).png";
@@ -15,11 +16,24 @@ const projects = [
   { title: "GetCoffee", category: "Projeto de interface", description: "Página de temática café com HTML e CSS, voltada ao desenvolvimento de interfaces.", tags: ["HTML", "CSS", "Layout"], preview: "coffee", image: "https://raw.githubusercontent.com/pietrossantos/GetCoffee/main/assets/copo.png", github: "https://github.com/pietrossantos/GetCoffee" },
 ];
 
+const filters = [
+  { label: "Todos", matches: () => true },
+  { label: "React", matches: project => project.tags.includes("React") },
+  { label: "JavaScript", matches: project => project.tags.includes("JavaScript") },
+  { label: "HTML / CSS", matches: project => project.tags.includes("HTML") || project.tags.includes("CSS") },
+  { label: "Back-end", matches: project => project.tags.some(tag => ["Node.js", "Express", "MySQL", "Sequelize"].includes(tag)) },
+];
+
 const Wrap = styled.main`
   width: min(1160px, calc(100% - 40px)); margin: 0 auto; padding: 64px 0 100px;
   .eyebrow { color: #6ff28c; text-transform: uppercase; letter-spacing: .18em; font-size: 12px; font-weight: 700; }
   h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); color: #f4fcff; margin: 14px 0; letter-spacing: -.045em; }
   .intro { color: #b8cdbb; max-width: 720px; line-height: 1.8; margin-bottom: 42px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 10px; margin: -10px 0 18px; }
+  .filter { padding: 10px 15px; border: 1px solid #306a42; border-radius: 100px; background: rgba(12,40,20,.75); color: #bce9c5; font: 600 13px "Oxanium", sans-serif; cursor: pointer; transition: border-color .2s, background .2s, color .2s; }
+  .filter:hover, .filter:focus-visible { border-color: #84f4a2; color: #fff; }
+  .filter[aria-pressed="true"] { background: linear-gradient(115deg,#42ce6b,#a1f7b0); color: #06150b; border-color: transparent; }
+  .results-count { color: #8db99a; font-size: 13px; margin-bottom: 22px; }
   .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   .card { position: relative; isolation: isolate; --mouse-x: 50%; --mouse-y: 50%; }
   .card::before { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: inherit; opacity: 0; background: radial-gradient(380px circle at var(--mouse-x) var(--mouse-y), rgba(100,255,149,.14), transparent 70%); transition: opacity .35s ease; }
@@ -65,7 +79,11 @@ const moveSpotlight = (event) => {
   event.currentTarget.style.setProperty("--mouse-y", `${event.clientY - rect.top}px`);
 };
 
-const Projects = () => (
+const Projects = () => {
+  const [activeFilter, setActiveFilter] = useState("Todos");
+  const currentFilter = filters.find(filter => filter.label === activeFilter) ?? filters[0];
+  const visibleProjects = projects.filter(currentFilter.matches);
+  return (
   <>
     <Header />
     <Wrap>
@@ -74,7 +92,7 @@ const Projects = () => (
       <p className="intro reveal">Uma seleção de interfaces, desafios pessoais e experiências de desenvolvimento em equipe. Cada projeto representa uma etapa da minha evolução como desenvolvedor Front-end.</p>
       <div className="grid">
         {projects.map((project) => (
-          <article className="card reveal" key={project.title} onPointerMove={moveSpotlight}>
+          <article className="card" key={project.title} onPointerMove={moveSpotlight}>
             {project.preview === "asteroid" ? <div className="art asteroid" role="img" aria-label="Ilustração de um asteroide monitorado em órbita"><svg viewBox="0 0 500 300" aria-hidden="true"><defs><radialGradient id="rock"><stop stopColor="#b5b9a6"/><stop offset="1" stopColor="#45544f"/></radialGradient></defs>{Array.from({length:36},(_,i)=><circle key={i} cx={(i*97+29)%500} cy={(i*53+17)%300} r={i%5===0?1.6:.7} fill="#b1ffe0" opacity=".55"/>)}<ellipse cx="250" cy="150" rx="177" ry="68" fill="none" stroke="#5ce6b1" strokeWidth="1.5" opacity=".65" transform="rotate(-21 250 150)"/><ellipse cx="250" cy="150" rx="130" ry="114" fill="none" stroke="#5ce6b1" strokeDasharray="4 8" opacity=".25"/><path d="M212 97L253 77 301 96 326 131 310 172 270 201 222 192 183 157 189 121Z" fill="url(#rock)" stroke="#c1c8bb" strokeWidth="2"/><path d="M213 101L239 121 230 152 197 148M254 79L262 119 297 127 324 131M232 154L265 180 270 199" fill="none" stroke="#394841" strokeWidth="3"/><ellipse cx="242" cy="135" rx="15" ry="10" fill="#384942"/><ellipse cx="281" cy="164" rx="11" ry="7" fill="#394841"/><text x="44" y="44" fill="#a1f7ce" fontSize="12" letterSpacing="3">ASTEROID TRACKER</text><text x="303" y="263" fill="#a1f7ce" fontSize="10" letterSpacing="2">ORBITAL SCAN / 001</text></svg></div> : project.preview ? <div className={`art ${project.preview}`}><img src={project.image} alt={`Imagem original do projeto ${project.title}`} loading="lazy" /></div> : project.image ? <img className="image" src={project.image} alt={`Prévia do projeto ${project.title}`} loading="lazy" /> : <div className="placeholder" aria-hidden="true"><span>{project.title}</span></div>}
             <div className="content">
               <span className="category">{project.category}</span>
