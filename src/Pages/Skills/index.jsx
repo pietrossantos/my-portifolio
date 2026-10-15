@@ -1,28 +1,37 @@
+import styled from "styled-components";
 import Header from "../../components/Header";
 
 const groups = [
-  { title: "Front-end", skills: ["HTML5", "CSS3", "JavaScript", "React.js", "Styled-components", "Sass", "Design responsivo"] },
-  { title: "Ferramentas e conhecimentos", skills: ["Git", "GitHub", "Vite", "React Router", "APIs REST", "Next.js (estudos)"] },
+  { title: "Desenvolvimento Front-end", subtitle: "Tecnologias que utilizo para construir interfaces", items: ["React.js", "JavaScript", "HTML5", "CSS3", "Styled-components", "Sass", "Design responsivo"] },
+  { title: "Ferramentas e práticas", subtitle: "Meu fluxo de desenvolvimento", items: ["Git", "GitHub", "Vite", "React Router", "Consumo de APIs REST", "Componentização"] },
+  { title: "Em evolução", subtitle: "Assuntos que continuo aprofundando", items: ["Next.js", "Acessibilidade web", "Experiência do usuário", "Python"] },
 ];
-
+const Layout = styled.main`
+  width: min(1100px, calc(100% - 40px)); margin: 0 auto; padding: 64px 0 100px;
+  .eyebrow { color: #62e7b4; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; }
+  h1 { color: #f3fcff; font-size: clamp(2.5rem, 5vw, 4.5rem); margin: 14px 0; letter-spacing: -.04em; }
+  .intro { color: #b7c9d7; line-height: 1.8; max-width: 650px; margin-bottom: 42px; }
+  .grid { display: grid; gap: 20px; }
+  section { border: 1px solid #285569; border-radius: 20px; background: linear-gradient(125deg, #0b2737, #071624); padding: clamp(22px, 4vw, 34px); }
+  h2 { font-size: clamp(1.35rem, 2.6vw, 1.8rem); margin: 0 0 8px; color: #eafaff; }
+  section p { color: #8da9ba; margin: 0 0 24px; }
+  ul { display: flex; gap: 12px; flex-wrap: wrap; padding: 0; margin: 0; list-style: none; }
+  li { padding: 12px 17px; border: 1px solid #356c70; border-radius: 10px; color: #9af0cd; background: rgba(27, 94, 96, .12); }
+`;
 const Skills = () => (
   <>
     <Header />
-    <main style={{ maxWidth: "1000px", margin: "0 auto", padding: "32px 24px 64px", color: "#f5f5f5" }}>
-      <h1>Habilidades e tecnologias</h1>
-      <p>Ferramentas que utilizo em projetos Front-end e tecnologias que venho estudando.</p>
-      {groups.map((group) => (
-        <section key={group.title} style={{ marginTop: "32px" }}>
-          <h2>{group.title}</h2>
-          <ul style={{ display: "flex", flexWrap: "wrap", gap: "12px", listStyle: "none", padding: 0 }}>
-            {group.skills.map((skill) => (
-              <li key={skill} style={{ padding: "10px 16px", border: "1px solid #64748b", borderRadius: "8px" }}>{skill}</li>
-            ))}
-          </ul>
+    <Layout>
+      <span className="eyebrow">Tecnologias / Aprendizado contínuo</span>
+      <h1>Habilidades & ferramentas.</h1>
+      <p className="intro">Tecnologias que aplico em projetos e conhecimentos que venho desenvolvendo para criar experiências web cada vez melhores.</p>
+      <div className="grid">{groups.map(group => (
+        <section key={group.title}>
+          <h2>{group.title}</h2><p>{group.subtitle}</p>
+          <ul>{group.items.map(item => <li key={item}>{item}</li>)}</ul>
         </section>
-      ))}
-    </main>
+      ))}</div>
+    </Layout>
   </>
 );
-
 export default Skills;
