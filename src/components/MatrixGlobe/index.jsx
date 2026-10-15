@@ -22,7 +22,7 @@ const Shell = styled.div`
   .point { fill: #b0ffbc; }
   .outline { fill: none; stroke: #5dff89; stroke-width: 1.4; opacity: .82; }
   svg { cursor: grab; touch-action: none; user-select: none; } svg:active { cursor: grabbing; }
-  .label { position: absolute; bottom: 4%; left: 50%; transform: translateX(-50%); color: #6fe99a; font: 600 10px "Space Grotesk",sans-serif; letter-spacing: .23em; white-space: nowrap; pointer-events: none; }
+  .label { position: absolute; bottom: 4%; left: 50%; transform: translateX(-50%); color: #6fe99a; font: 600 10px "Oxanium","Space Grotesk",sans-serif; letter-spacing: .23em; white-space: nowrap; pointer-events: none; }
 `;
 
 const RAD = Math.PI / 180;
