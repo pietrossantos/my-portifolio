@@ -16,7 +16,7 @@ const Hero = styled.section`
   align-items: center;
   gap: 36px;
   .eyebrow { display: inline-block; color: #75ef92; letter-spacing: .16em; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 22px; }
-  h1 { color: #f3fbff; font-size: clamp(2.5rem, 5.6vw, 5.2rem); line-height: 1.07; letter-spacing: -.045em; margin-bottom: 24px; }
+  h1 { font-family: "Space Grotesk", sans-serif; font-weight: 700; text-transform: none; color: #f3fbff; font-size: clamp(2.5rem, 5.6vw, 5.2rem); line-height: 1.07; letter-spacing: -.045em; margin-bottom: 24px; }
   h1 span { color: #7ff49c; }
   p { max-width: 570px; color: #b8cdbb; font-size: clamp(1rem, 1.4vw, 1.13rem); line-height: 1.8; }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
