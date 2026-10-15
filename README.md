@@ -1,19 +1,31 @@
-# Portfólio pessoal — React
+# Portfólio | Pietro Candido
 
-Projeto de portfólio desenvolvido com **React**, **JavaScript**, **Vite** e **Styled-components**.
+Portfólio pessoal de **Pietro Candido**, desenvolvedor Front-end. Projeto construído com **React**, **JavaScript**, **Vite** e **Styled-components**, com foco em apresentação profissional, navegação intuitiva e interfaces responsivas.
 
-## Tecnologias identificadas
+🌐 **[Acessar portfólio online](https://my-portifolio-drab.vercel.app/)**
 
-- React 18 e React Router
-- Styled-components
-- React Hook Form e Yup
-- React Icons e React Toastify
-- EmailJS (dependência presente no projeto)
-- Vite
+## Funcionalidades
 
-## Como executar localmente
+- Páginas de início, projetos, habilidades e contato
+- Navegação entre páginas com React Router e página personalizada para rotas inexistentes
+- Paleta de comandos para navegação rápida
+- Detalhes dos projetos em interface modal
+- Indicador de progresso de rolagem e botão de voltar ao topo
+- Formulário de contato com validação de e-mail, feedback de envio e integração com EmailJS
+- Layout responsivo com identidade visual própria
 
-**Pré-requisito:** Node.js e npm instalados.
+## Tecnologias
+
+- **Interface:** React 18, JavaScript, Styled-components, React Icons
+- **Navegação:** React Router DOM 7
+- **Formulários:** React Hook Form, Yup, EmailJS e React Toastify
+- **Ferramentas:** Vite 8, ESLint e Node.js
+- **Testes:** Node.js Test Runner para a validação de e-mails
+- **Publicação:** Vercel
+
+## Executar localmente
+
+**Pré-requisitos:** Node.js compatível com o Vite 8 (recomenda-se Node.js 24) e npm.
 
 ```bash
 git clone https://github.com/pietrossantos/my-portifolio.git
@@ -22,25 +34,31 @@ npm install
 npm run dev
 ```
 
-Abra no navegador o endereço exibido pelo Vite no terminal.
+Abra o endereço local exibido no terminal.
 
-## Comandos disponíveis
+## Verificações
 
 ```bash
-npm run dev
 npm run build
 npm run lint
-npm run preview
+npm test
+npm audit
 ```
 
-## Estrutura do código
+Os testes automatizados atualmente cobrem a validação de e-mails do formulário. Além deles, é recomendável conferir a navegação e o envio do formulário manualmente após mudanças importantes.
 
-O diretório `src/` contém páginas, componentes, recursos visuais, estilos globais e configuração de rotas.
+## Organização
 
-## Status
+- `src/Pages/` — páginas do portfólio
+- `src/components/` — componentes reutilizáveis
+- `src/routes.jsx` — configuração de rotas
 
-Projeto existente em revisão e atualização de documentação. A execução e a publicação online ainda precisam ser validadas.
+## Links
 
-## Autor
+- 🌐 [Portfólio publicado](https://my-portifolio-drab.vercel.app/)
+- 💻 [GitHub](https://github.com/pietrossantos)
+- 💼 [LinkedIn](https://www.linkedin.com/in/pietrocandidocs/)
 
-**Pietro Candido** — [GitHub](https://github.com/pietrossantos) · [LinkedIn](https://www.linkedin.com/in/pietrocandidocs/)
+---
+
+Desenvolvido por **Pietro Candido**.
