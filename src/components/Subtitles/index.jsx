@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { SubtitleStyle} from "./style";
 
 const Subtitle = ({ children }) => {
@@ -10,5 +10,7 @@ const Subtitle = ({ children }) => {
     </>
   );
 };
+
+Subtitle.propTypes = { children: PropTypes.node };
 
 export default Subtitle;
