@@ -16,7 +16,7 @@ export const FormDeddy=styled.form`
   border-radius:22px;box-shadow:0 0 35px rgba(21,124,47,.08),inset 0 0 28px rgba(20,99,38,.09);
   transition:box-shadow .4s ease,border-color .4s ease;
   &:focus-within{border-color:rgba(94,255,139,.75);box-shadow:0 0 34px rgba(42,210,88,.13)}
-  .honeypot{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;pointer-events:none!important}
+  .connection-warning{align-self:stretch;margin:16px 0 0;padding:13px 15px;border:1px solid #b88948;border-radius:10px;background:#302415;color:#ffe6b6;font-size:14px;line-height:1.5}
   .form-heading{width:100%;text-align:left}
   .form-heading h2{font-family:"Oxanium","Space Grotesk",sans-serif;font-size:clamp(25px,3vw,32px);margin:8px 0;color:#ecfff0}
   .form-heading p,.form-note{color:#a9c1ae;line-height:1.65;font-size:14px}
@@ -30,6 +30,7 @@ export const FormDeddy=styled.form`
   .send-status.error>span:first-child{background:rgba(255,130,144,.16)}
   .send-status.loading{border-color:#4c8272;background:#102d29;color:#d5f9ed}
   [aria-invalid="true"]{border-color:#f18c8c;box-shadow:0 0 0 1px rgba(241,140,140,.16)}
+  [data-valid="true"]:not([aria-invalid="true"]){border-color:#4da96a;box-shadow:inset 0 0 0 1px rgba(78,200,110,.12)}
   h2{color:#ecfff0;text-align:left}
   @media(max-width:680px){min-height:0;padding:26px 18px}
 `;
