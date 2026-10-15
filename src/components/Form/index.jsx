@@ -24,7 +24,7 @@ const schema = yup.object({
   name: yup.string().trim().min(2, "Digite pelo menos 2 caracteres").max(90).required("Informe seu nome"),
   email: yup.string().trim().required("Informe seu e-mail")
     .email("Informe um e-mail válido")
-    .matches(/^[^\\s@]+@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$/, "Informe um domínio completo, como exemplo.com")
+    .matches(/^[^\s@]+@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/, "Informe um domínio completo, como exemplo.com")
     .test("common-domain-typos", function (value) {
       if (!value || !value.includes("@")) return true;
       const domain = value.split("@").pop().toLowerCase();
