@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Shell = styled.div`
   position: relative; width: min(520px,100%); aspect-ratio: 1; isolation: isolate;
   &::before { content:""; position:absolute; inset:12%; border-radius:50%; background:radial-gradient(circle,rgba(33,255,107,.15),transparent 68%); filter:blur(27px); pointer-events:none; }
-  canvas { display:block; width:100%; height:100%; cursor:grab; touch-action:pan-y; }
+  canvas { position:absolute; inset:0; display:block; width:100%; height:100%; cursor:grab; touch-action:pan-y; }
   canvas:active { cursor:grabbing; }
   .label { position:absolute; bottom:4%; left:50%; transform:translateX(-50%); color:#6fe99a; font:600 10px "Space Grotesk",sans-serif; letter-spacing:.23em; white-space:nowrap; opacity:.7; pointer-events:none; }
   @media (prefers-reduced-motion:reduce) { .label { opacity:.85; } }
@@ -19,7 +19,7 @@ const Globe = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     let frame = 0, raf = 0, angle = .35, tilt = -.16, targetTilt = -.16, targetVelocity = .0038, velocity = .0038;
-    let width = 440, height = 440, hovering = false, lastX = null;
+    let width = 440, height = 440, lastX = null;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const resize = () => {
       const bounds = canvas.getBoundingClientRect();
@@ -102,12 +102,12 @@ const Globe = () => {
       const y=(event.clientY-rect.top)/rect.height-.5;
       targetTilt=Math.max(-.55,Math.min(.55,y*.85));
       if(lastX!==null)targetVelocity=Math.max(-.022,Math.min(.022,(event.clientX-lastX)*.0016+.003));
-      lastX=event.clientX;hovering=true;
+      lastX=event.clientX;
     };
-    const leave=()=>{hovering=false;lastX=null;targetTilt=-.16;targetVelocity=.0038;};
+    const leave=()=>{lastX=null;targetTilt=-.16;targetVelocity=.0038;};
     canvas.addEventListener("pointermove",move);canvas.addEventListener("pointerleave",leave);
     draw();
-    return ()=>{cancelAnimationFrame(raf);observer.disconnect();canvas.removeEventListener("pointermove",move);canvas.removeEventListener("pointerleave",leave);};
+    return ()=>{cancelAnimationFrame(raf);observer?.disconnect();window.removeEventListener("resize",resize);canvas.removeEventListener("pointermove",move);canvas.removeEventListener("pointerleave",leave);};
   },[]);
   return <Shell><canvas ref={canvasRef} role="img" aria-label="Globo tridimensional Matrix, com linhas de latitude e longitude verdes, pontos luminosos e rotação interativa" /><span className="label">DIGITAL WORLD // 001</span></Shell>;
 };
