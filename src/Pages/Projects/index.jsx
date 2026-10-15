@@ -10,9 +10,9 @@ const projects = [
   { title: "Roberta Rocha", category: "Projeto em equipe · Web Social", description: "Participei do desenvolvimento de seções da interface, trabalhando com organização de componentes e implementação visual.", tags: ["Front-end", "Componentes", "UI"], image: robertaImage, live: "https://robertarocha.netlify.app/", github: "https://github.com/pietrossantos/roberta-rocha", featured: true },
   { title: "Calculadora", category: "Projeto pessoal", description: "Calculadora inspirada na experiência mobile, com operações matemáticas básicas e interface própria.", tags: ["JavaScript", "Interface", "Lógica"], image: calculatorImage, live: "https://calculator-p.vercel.app/", github: "https://github.com/pietrossantos/Calculator-P" },
   { title: "Meu portfólio", category: "Projeto pessoal · Em evolução", description: "Meu espaço profissional, construído com React e Styled-components. Em constante evolução, com foco em experiência, acessibilidade e responsividade.", tags: ["React", "Styled-components", "Vite"], image: portfolioImage, live: "https://my-portifolio-drab.vercel.app/", github: "https://github.com/pietrossantos/my-portifolio" },
-  { title: "Cadastro de Empresas", category: "Projeto acadêmico · JavaScript", description: "Cadastro com classes, manipulação do DOM e recursos para editar e excluir empresas.", tags: ["JavaScript", "POO", "CRUD", "DOM"], github: "https://github.com/pietrossantos/portifolio_M2_PdA" },
-  { title: "Monitoramento de Asteroides", category: "Projeto de estudo · Back-end", description: "API com Express, organização em camadas e integração com MySQL e Sequelize.", tags: ["Node.js", "Express", "MySQL", "Sequelize"], github: "https://github.com/pietrossantos/asteroid_monitoring_system" },
-  { title: "GetCoffee", category: "Projeto de interface", description: "Página de temática café com HTML e CSS, voltada ao desenvolvimento de interfaces.", tags: ["HTML", "CSS", "Layout"], github: "https://github.com/pietrossantos/GetCoffee" },
+  { title: "Cadastro de Empresas", category: "Projeto acadêmico · JavaScript", description: "Cadastro com classes, manipulação do DOM e recursos para editar e excluir empresas.", tags: ["JavaScript", "POO", "CRUD", "DOM"], preview: "jobs", image: "https://raw.githubusercontent.com/pietrossantos/portifolio_M2_PdA/main/img/logoJob.png", github: "https://github.com/pietrossantos/portifolio_M2_PdA" },
+  { title: "Monitoramento de Asteroides", category: "Projeto de estudo · Back-end", description: "API com Express, organização em camadas e integração com MySQL e Sequelize.", tags: ["Node.js", "Express", "MySQL", "Sequelize"], preview: "asteroid", github: "https://github.com/pietrossantos/asteroid_monitoring_system" },
+  { title: "GetCoffee", category: "Projeto de interface", description: "Página de temática café com HTML e CSS, voltada ao desenvolvimento de interfaces.", tags: ["HTML", "CSS", "Layout"], preview: "coffee", image: "https://raw.githubusercontent.com/pietrossantos/GetCoffee/main/assets/copo.png", github: "https://github.com/pietrossantos/GetCoffee" },
 ];
 
 const Wrap = styled.main`
@@ -25,6 +25,13 @@ const Wrap = styled.main`
   .card:hover { transform: translateY(-5px); border-color: #67eb8c; box-shadow: 0 18px 50px rgba(28,129,48,.15); }
   .image { display: block; width: 100%; height: 300px; object-fit: contain; object-position: center; padding: 18px; background: radial-gradient(circle at center, #15391e, #08170e 72%); border-bottom: 1px solid #285c37; transition: transform .35s ease; }
   .card:hover .image { transform: scale(1.025); }
+  .art { position:relative; height:300px; display:grid; place-items:center; overflow:hidden; border-bottom:1px solid #285c37; background:radial-gradient(circle at center,#18432a,#07160e 72%); }
+  .art img { width:min(65%,250px); height:220px; object-fit:contain; filter:drop-shadow(0 15px 24px rgba(0,0,0,.4)); transition:transform .3s ease; }
+  .card:hover .art img { transform:scale(1.06); }
+  .art.coffee { background:radial-gradient(circle,#61402c,#1a100d 72%); }
+  .art.jobs img { width:min(48%,190px); }
+  .art.asteroid { background:radial-gradient(circle,#18353b,#061013 74%); }
+  .art svg { width:100%; height:100%; }
   .placeholder { height: 300px; display: grid; place-items: center; text-align: center; padding: 25px; background: radial-gradient(circle at 50% 35%, #194d29, #08170e 70%); border-bottom: 1px solid #285c37; }
   .placeholder span { font-family: "Space Grotesk", sans-serif; font-size: clamp(23px, 3vw, 36px); letter-spacing: -.035em; font-weight: 700; color: #8df7a5; }
   .content { padding: clamp(20px, 3vw, 30px); }
@@ -53,7 +60,7 @@ const Projects = () => (
       <div className="grid">
         {projects.map((project) => (
           <article className="card" key={project.title}>
-            {project.image ? <img className="image" src={project.image} alt={`Prévia do projeto ${project.title}`} loading="lazy" /> : <div className="placeholder" aria-hidden="true"><span>{project.title}</span></div>}
+            {project.preview === "asteroid" ? <div className="art asteroid" role="img" aria-label="Ilustração de um asteroide monitorado em órbita"><svg viewBox="0 0 500 300" aria-hidden="true"><defs><radialGradient id="rock"><stop stopColor="#b5b9a6"/><stop offset="1" stopColor="#45544f"/></radialGradient></defs>{Array.from({length:36},(_,i)=><circle key={i} cx={(i*97+29)%500} cy={(i*53+17)%300} r={i%5===0?1.6:.7} fill="#b1ffe0" opacity=".55"/>)}<ellipse cx="250" cy="150" rx="177" ry="68" fill="none" stroke="#5ce6b1" strokeWidth="1.5" opacity=".65" transform="rotate(-21 250 150)"/><ellipse cx="250" cy="150" rx="130" ry="114" fill="none" stroke="#5ce6b1" strokeDasharray="4 8" opacity=".25"/><path d="M212 97L253 77 301 96 326 131 310 172 270 201 222 192 183 157 189 121Z" fill="url(#rock)" stroke="#c1c8bb" strokeWidth="2"/><path d="M213 101L239 121 230 152 197 148M254 79L262 119 297 127 324 131M232 154L265 180 270 199" fill="none" stroke="#394841" strokeWidth="3"/><ellipse cx="242" cy="135" rx="15" ry="10" fill="#384942"/><ellipse cx="281" cy="164" rx="11" ry="7" fill="#394841"/><text x="44" y="44" fill="#a1f7ce" fontSize="12" letterSpacing="3">ASTEROID TRACKER</text><text x="303" y="263" fill="#a1f7ce" fontSize="10" letterSpacing="2">ORBITAL SCAN / 001</text></svg></div> : project.preview ? <div className={`art ${project.preview}`}><img src={project.image} alt={`Imagem original do projeto ${project.title}`} loading="lazy" /></div> : project.image ? <img className="image" src={project.image} alt={`Prévia do projeto ${project.title}`} loading="lazy" /> : <div className="placeholder" aria-hidden="true"><span>{project.title}</span></div>}
             <div className="content">
               <span className="category">{project.category}</span>
               <h2>{project.title}</h2>
