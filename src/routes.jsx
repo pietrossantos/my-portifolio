@@ -6,12 +6,14 @@ import Contact from "./Pages/Contact";
 import CommandPalette from "./components/CommandPalette";
 import NotFound from "./Pages/NotFound";
 import ScrollProgress from "./components/ScrollProgress";
+import BackToTop from "./components/BackToTop";
 
 const RoutesApp = () => {
   return (
     <BrowserRouter>
       <CommandPalette />
       <ScrollProgress />
+      <BackToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Projects />} />
