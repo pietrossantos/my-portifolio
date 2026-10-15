@@ -61,7 +61,7 @@ const Contact = () => {
           <p className="terminal-lead">Tem uma oportunidade, projeto ou ideia? Escolha um canal e vamos conversar.</p>
           <div className="links">
             <div><span>E-mail</span><a href={`mailto:${EMAIL}`}>{EMAIL}</a><div><button type="button" className="copy-button" onClick={copyEmail}>Copiar e-mail ↗</button><span className="copy-status" role="status" aria-live="polite">{copyStatus}</span></div></div>
-            <div><span>LinkedIn</span><a href="https://www.linkedin.com/in/pietrocandidocs/" target="_blank" rel="noopener noreferrer">Perfil profissional</a></div>
+            <div><span>LinkedIn</span><a href="https://www.linkedin.com/in/pietrocandido/" target="_blank" rel="noopener noreferrer">Perfil profissional</a></div>
             <div><span>GitHub</span><a href="https://github.com/pietrossantos" target="_blank" rel="noopener noreferrer">github.com/pietrossantos</a></div>
           </div>
         </section>
