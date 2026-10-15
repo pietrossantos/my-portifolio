@@ -1,3 +1,8 @@
+import calculatorImage from "../../assets/img/mobile (3).png";
+import khrisImage from "../../assets/img/mobile (4).png";
+import robertaImage from "../../assets/img/mobile (5).png";
+import portfolioImage from "../../assets/img/mobile (1).png";
+import githubIcon from "../../assets/img/GitHub.svg";
 import React from "react";
 import {
   BoxCases,
@@ -13,9 +18,9 @@ const Cases = () => {
     <>
       <BoxCases>
         <SectionCase>
-          <a href="https://calculator-p.vercel.app/" target="_blank">
+          <a href="https://calculator-p.vercel.app/" target="_blank" rel="noopener noreferrer">
             <CostumizeCases
-              src="../../../src/assets/img/mobile (3).png"
+              src={calculatorImage}
               alt="imagem ilustrativa"
             />
           </a>
@@ -30,10 +35,10 @@ const Cases = () => {
             </Text>
             <Logos>
               <img
-                src="../../../src/assets/img/GitHub.svg"
+                src={githubIcon}
                 alt="imagem ilustrativa"
               />
-              <a href="https://calculator-p.vercel.app/" target="_blank">
+              <a href="https://calculator-p.vercel.app/" target="_blank" rel="noopener noreferrer">
                 <LinkExternal />
               </a>
             </Logos>
@@ -43,9 +48,9 @@ const Cases = () => {
 
       <BoxCases>
         <SectionCase>
-          <a href="https://khrisdecora.com.br/" target="_blank">
+          <a href="https://khrisdecora.com.br/" target="_blank" rel="noopener noreferrer">
             <CostumizeCases
-              src="../../../src/assets/img/mobile (4).png"
+              src={khrisImage}
               alt="imagem ilustrativa"
             />
           </a>
@@ -62,10 +67,10 @@ const Cases = () => {
             </Text>
             <Logos>
               <img
-                src="../../../src/assets/img/GitHub.svg"
+                src={githubIcon}
                 alt="imagem ilustrativa"
               />
-              <a href="https://khrisdecora.com.br/" target="_blank">
+              <a href="https://khrisdecora.com.br/" target="_blank" rel="noopener noreferrer">
                 <LinkExternal />
               </a>
             </Logos>
@@ -75,9 +80,9 @@ const Cases = () => {
 
       <BoxCases>
         <SectionCase>
-          <a href="https://robertarocha.netlify.app/" target="_blank">
+          <a href="https://robertarocha.netlify.app/" target="_blank" rel="noopener noreferrer">
             <CostumizeCases
-              src="../../../src/assets/img/mobile (5).png"
+              src={robertaImage}
               alt="imagem ilustrativa"
             />
           </a>
@@ -91,10 +96,10 @@ const Cases = () => {
             </Text>
             <Logos>
               <img
-                src="../../../src/assets/img/GitHub.svg"
+                src={githubIcon}
                 alt="imagem ilustrativa"
               />
-              <a href="https://robertarocha.netlify.app/" target="_blank">
+              <a href="https://robertarocha.netlify.app/" target="_blank" rel="noopener noreferrer">
                 <LinkExternal />
               </a>
             </Logos>
@@ -104,9 +109,9 @@ const Cases = () => {
 
       <BoxCases>
         <SectionCase>
-          <a href="https://my-portifolio-drab.vercel.app/" target="_blank">
+          <a href="https://my-portifolio-drab.vercel.app/" target="_blank" rel="noopener noreferrer">
             <CostumizeCases
-              src="../../../src/assets/img/mobile (1).png"
+              src={portfolioImage}
               alt="imagem ilustrativa"
             />
           </a>
@@ -124,10 +129,10 @@ const Cases = () => {
 
             <Logos>
               <img
-                src="../../../src/assets/img/GitHub.svg"
+                src={githubIcon}
                 alt="imagem ilustrativa"
               />
-              <a href="https://my-portifolio-drab.vercel.app/" target="_blank">
+              <a href="https://my-portifolio-drab.vercel.app/" target="_blank" rel="noopener noreferrer">
                 <LinkExternal />
               </a>
             </Logos>
