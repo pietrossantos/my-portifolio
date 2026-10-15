@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import MatrixGlobe from "../../components/MatrixGlobe";
@@ -15,6 +16,12 @@ const Hero = styled.section`
   grid-template-columns: 1.05fr .95fr;
   align-items: center;
   gap: 36px;
+  .terminal-label { display: inline-flex; align-items: center; gap: 9px; padding: 7px 12px; margin-bottom: 20px; border: 1px solid rgba(99,239,141,.35); border-radius: 7px; color: #9cf6b3; background: rgba(31,103,52,.12); font: 600 12px "Oxanium", monospace; letter-spacing: .08em; }
+  .terminal-label::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #75ef92; box-shadow: 0 0 10px #75ef92; }
+  .typing-line { display: block; min-height: 1.2em; color: #7ff49c; font-weight: 800; letter-spacing: -.035em; }
+  .typing-cursor { display: inline-block; width: .065em; height: .85em; margin-left: .08em; vertical-align: -.08em; background: #7ff49c; animation: cursor-blink 1s steps(1) infinite; }
+  @keyframes cursor-blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .typing-cursor { animation: none; } }
   .eyebrow { display: inline-block; color: #75ef92; letter-spacing: .16em; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 22px; }
   h1 { font-family: "Oxanium", "Space Grotesk", sans-serif; font-weight: 700; text-transform: none; color: #f3fbff; font-size: clamp(2.5rem, 5.6vw, 5.2rem); line-height: 1.07; letter-spacing: -.045em; margin-bottom: 24px; }
   h1 span { color: #7ff49c; font-weight: 800; letter-spacing: -.035em; }
@@ -43,14 +50,48 @@ const Footer = styled.footer`
   a { color: #83f39f; }
 `;
 
-const Home = () => (
+const FULL_NAME = "Pietro Candido.";
+
+function useTypewriter(text) {
+  const [value, setValue] = useState(() =>
+    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches ? text : ""
+  );
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setValue(text);
+      return;
+    }
+    let index = 0;
+    setValue("");
+    const start = window.setTimeout(() => {
+      const timer = window.setInterval(() => {
+        index += 1;
+        setValue(text.slice(0, index));
+        if (index >= text.length) window.clearInterval(timer);
+      }, 85);
+      interval = timer;
+    }, 400);
+    let interval;
+    return () => {
+      window.clearTimeout(start);
+      window.clearInterval(interval);
+    };
+  }, [text]);
+  return value;
+}
+
+const Home = () => {
+  const typedName = useTypewriter(FULL_NAME);
+  return (
   <>
     <Header />
     <Page>
       <Hero>
         <div className="reveal">
+          <span className="terminal-label">SYSTEM ONLINE // FRONT-END</span>
           <span className="eyebrow">Front-end Developer · Rio de Janeiro</span>
-          <h1>Olá, eu sou <span>Pietro Candido.</span></h1>
+          <h1>Olá, eu sou <span className="typing-line">{typedName}<span className="typing-cursor" aria-hidden="true" /></span></h1>
           <p>Transformo ideias em experiências digitais. Desenvolvo interfaces modernas e responsivas com React, JavaScript e atenção aos detalhes.</p>
           <div className="actions">
             <Link className="primary" to="/projects">Explorar projetos ↗</Link>
@@ -83,6 +124,7 @@ const Home = () => (
       <Footer>© {new Date().getFullYear()} Pietro Candido · Desenvolvido com React.</Footer>
     </Page>
   </>
-);
+  );
+};
 
 export default Home;
