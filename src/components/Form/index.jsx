@@ -21,16 +21,15 @@ const schema = yup.object({
 
 const Form = () => {
   const sendingRef = useRef(false);
-  const formStartedAt = useRef(Date.now());
   const [sendStatus, setSendStatus] = useState({ type: "", message: "" });
   const { register, handleSubmit, setFocus, formState: { errors, isSubmitting }, reset } = useForm({
     resolver: yupResolver(schema), mode: "onBlur", defaultValues: { name: "", email: "", number: "", subject: "", message: "", website: "" }
   });
   const sendEmail = async data => {
     if (sendingRef.current) return;
-    // Honeypot e tempo mínimo: barreira básica contra bots, não substitui proteção no servidor.
-    if (data.website || Date.now() - formStartedAt.current < 2500) {
-      setSendStatus({ type: "error", message: "Aguarde alguns segundos e tente enviar novamente." });
+    // Honeypot: proteção básica que não bloqueia preenchimento automático legítimo.
+    if (data.website) {
+      setSendStatus({ type: "success", message: "Mensagem recebida." });
       return;
     }
     sendingRef.current = true;
@@ -50,7 +49,6 @@ const Form = () => {
       }, "lumHRW6doBVW8kgam");
       toast.success("Mensagem enviada! Obrigado pelo contato.", { theme: "dark" });
       reset();
-      formStartedAt.current = Date.now();
       setSendStatus({ type: "success", message: "Mensagem enviada com sucesso! Obrigado pelo contato." });
     } catch (error) {
       console.error("Falha no envio de contato", error);
