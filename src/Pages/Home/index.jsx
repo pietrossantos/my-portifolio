@@ -16,17 +16,23 @@ const Hero = styled.section`
   grid-template-columns: 1.05fr .95fr;
   align-items: center;
   gap: 36px;
-  .terminal-label { display: inline-flex; align-items: center; gap: 9px; padding: 7px 12px; margin-bottom: 20px; border: 1px solid rgba(99,239,141,.35); border-radius: 7px; color: #9cf6b3; background: rgba(31,103,52,.12); font: 600 12px "Oxanium", monospace; letter-spacing: .08em; }
+  .hero-meta { display: flex; flex-direction: column; align-items: flex-start; gap: 13px; margin-bottom: 28px; }
+  .terminal-label { display: inline-flex; align-items: center; gap: 9px; padding: 7px 12px; margin-bottom: 0; border: 1px solid rgba(99,239,141,.35); border-radius: 7px; color: #9cf6b3; background: rgba(31,103,52,.12); font: 600 12px "Oxanium", monospace; letter-spacing: .08em; }
   .terminal-label::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #75ef92; box-shadow: 0 0 10px #75ef92; }
   .typing-line { display: block; min-height: 1.2em; color: #7ff49c; font-weight: 800; letter-spacing: -.035em; }
   .typing-cursor { display: inline-block; width: .065em; height: .85em; margin-left: .08em; vertical-align: -.08em; background: #7ff49c; animation: cursor-blink 1s steps(1) infinite; }
   @keyframes cursor-blink { 50% { opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { .typing-cursor { animation: none; } }
-  .eyebrow { display: inline-block; color: #75ef92; letter-spacing: .16em; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 22px; }
+  .eyebrow { display: inline-block; color: #75ef92; letter-spacing: .16em; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 0; }
   h1 { font-family: "Oxanium", "Space Grotesk", sans-serif; font-weight: 700; text-transform: none; color: #f3fbff; font-size: clamp(2.5rem, 5.6vw, 5.2rem); line-height: 1.07; letter-spacing: -.045em; margin-bottom: 24px; }
   h1 span { color: #7ff49c; font-weight: 800; letter-spacing: -.035em; }
   p { max-width: 570px; color: #b8cdbb; font-size: clamp(1rem, 1.4vw, 1.13rem); line-height: 1.8; }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  @keyframes hero-action-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .actions a { animation: hero-action-in .65s cubic-bezier(.22,1,.36,1) both; }
+  .actions a:nth-child(1) { animation-delay: .35s; }
+  .actions a:nth-child(2) { animation-delay: .5s; }
+  @media (prefers-reduced-motion: reduce) { .actions a { animation: none; } }
   .actions a { text-decoration: none; padding: 14px 22px; border-radius: 10px; font-weight: 700; transition: transform .2s, border-color .2s; }
   .actions a:hover { transform: translateY(-3px); box-shadow: 0 0 22px rgba(91,239,131,.18); }
   .primary { background: linear-gradient(115deg, #42ce6b, #a1f7b0); color: #061323; }
@@ -89,8 +95,10 @@ const Home = () => {
     <Page>
       <Hero>
         <div className="reveal">
-          <span className="terminal-label">SYSTEM ONLINE // FRONT-END</span>
-          <span className="eyebrow">Front-end Developer · Rio de Janeiro</span>
+          <div className="hero-meta">
+            <span className="terminal-label">SYSTEM ONLINE // FRONT-END</span>
+            <span className="eyebrow">Front-end Developer · Rio de Janeiro</span>
+          </div>
           <h1>Olá, eu sou <span className="typing-line">{typedName}<span className="typing-cursor" aria-hidden="true" /></span></h1>
           <p>Transformo ideias em experiências digitais. Desenvolvo interfaces modernas e responsivas com React, JavaScript e atenção aos detalhes.</p>
           <div className="actions">
