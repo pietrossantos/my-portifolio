@@ -23,19 +23,14 @@ const Form = () => {
   const sendingRef = useRef(false);
   const [sendStatus, setSendStatus] = useState({ type: "", message: "" });
   const { register, handleSubmit, setFocus, formState: { errors, isSubmitting }, reset } = useForm({
-    resolver: yupResolver(schema), mode: "onBlur", defaultValues: { name: "", email: "", number: "", subject: "", message: "", website: "" }
+    resolver: yupResolver(schema), mode: "onBlur", defaultValues: { name: "", email: "", number: "", subject: "", message: "" }
   });
   const sendEmail = async data => {
     if (sendingRef.current) return;
-    // Honeypot: proteção básica que não bloqueia preenchimento automático legítimo.
-    if (data.website) {
-      setSendStatus({ type: "success", message: "Mensagem recebida." });
-      return;
-    }
     sendingRef.current = true;
     setSendStatus({ type: "loading", message: "Enviando sua mensagem..." });
     try {
-      await emailjs.send("service_fpz92le", "template_8082bd8", {
+      const response = await emailjs.send("service_fpz92le", "template_8082bd8", {
         name: data.name.trim(),
         from_name: data.name.trim(),
         email: data.email.trim(),
@@ -47,13 +42,15 @@ const Form = () => {
         title: data.subject.trim(),
         message: data.message.trim(),
       }, "lumHRW6doBVW8kgam");
-      toast.success("Mensagem enviada! Obrigado pelo contato.", { theme: "dark" });
+      if (response.status !== 200) throw new Error(`EmailJS retornou status ${response.status}`);
+      toast.success("Envio aceito pelo serviço de e-mail!", { theme: "dark" });
       reset();
-      setSendStatus({ type: "success", message: "Mensagem enviada com sucesso! Obrigado pelo contato." });
+      setSendStatus({ type: "success", message: "Envio aceito pelo serviço de e-mail. Verifique a caixa de entrada e o spam." });
     } catch (error) {
       console.error("Falha no envio de contato", error);
+      const details = error?.text || error?.message || "Erro desconhecido";
       toast.error("Não foi possível enviar agora. Você também pode entrar em contato por e-mail.", { theme: "dark" });
-      setSendStatus({ type: "error", message: "Não foi possível enviar. Tente novamente ou utilize o e-mail informado abaixo." });
+      setSendStatus({ type: "error", message: `Falha no envio: ${details}. Confira o EmailJS ou tente novamente.` });
     } finally {
       sendingRef.current = false;
     }
@@ -66,7 +63,6 @@ const Form = () => {
   return (
     <>
       <FormDeddy noValidate onSubmit={handleSubmit(sendEmail, onInvalid)} aria-busy={isSubmitting}>
-        <div className="honeypot" aria-hidden="true"><label htmlFor="contact-website">Deixe este campo vazio</label><input id="contact-website" type="text" autoComplete="off" tabIndex={-1} {...register("website")} /></div>
         <div className="form-heading">
           <span className="form-eyebrow">CONTATO DIRETO</span>
           <h2>Conte sua ideia</h2>
