@@ -82,7 +82,7 @@ const Form = () => {
   };
   return (
     <>
-      <FormDeddy noValidate onSubmit={handleSubmit(sendEmail, onInvalid)} aria-busy={isSubmitting}>
+      <FormDeddy noValidate onSubmit={handleSubmit(sendEmail, onInvalid)} onInput={() => { if (sendStatus.type !== "loading") setSendStatus(current => current.message ? { type: "", message: "" } : current); }} aria-busy={isSubmitting}>
         <div className="form-heading">
           <span className="form-eyebrow">CONTATO DIRETO</span>
           <h2>Conte sua ideia</h2>
