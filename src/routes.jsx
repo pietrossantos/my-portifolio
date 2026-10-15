@@ -4,6 +4,7 @@ import Projects from "./Pages/Projects";
 import Skills from "./Pages/Skills";
 import Contact from "./Pages/Contact";
 import CommandPalette from "./components/CommandPalette";
+import NotFound from "./Pages/NotFound";
 
 const RoutesApp = () => {
   return (
@@ -14,6 +15,7 @@ const RoutesApp = () => {
         <Route path="/projects" element={<Projects />} />
         <Route path="/skills" element={<Skills />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
