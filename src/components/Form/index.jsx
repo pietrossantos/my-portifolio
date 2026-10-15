@@ -1,4 +1,3 @@
-import Subtitles from "../Subtitles";
 import Button from "../Button";
 import { FormDeddy, FormContainer, Input, Area, Span } from "./style";
 import { useForm } from "react-hook-form";
@@ -9,87 +8,73 @@ import "react-toastify/dist/ReactToastify.css";
 import emailjs from "@emailjs/browser";
 
 const schema = yup.object({
-  name: yup.string().trim().required("Informe seu nome"),
+  name: yup.string().trim().min(2, "Digite pelo menos 2 caracteres").max(90).required("Informe seu nome"),
   email: yup.string().trim().email("Informe um e-mail válido").required("Informe seu e-mail"),
-  number: yup.string().trim().required("Informe seu telefone")
-    .test("phone", "Informe um telefone com DDD válido", value => {
-      const digits = (value || "").replace(/\D/g, "");
-      return digits.length === 10 || digits.length === 11;
-    }),
-  subject: yup.string().trim().required("Informe o assunto"),
-  message: yup.string().trim().required("Escreva sua mensagem"),
+  number: yup.string().trim().test("phone", "Informe um telefone com DDD válido", value => {
+    const digits = (value || "").replace(/\D/g, "");
+    return !digits || digits.length === 10 || digits.length === 11;
+  }),
+  subject: yup.string().trim().min(3, "Descreva brevemente o assunto").max(120).required("Informe o assunto"),
+  message: yup.string().trim().min(15, "Conte um pouco mais (mínimo de 15 caracteres)").max(3000).required("Escreva sua mensagem"),
 }).required();
 
 const Form = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm({ resolver: yupResolver(schema) });
-
-  const sendEmail = async (data) => {
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm({
+    resolver: yupResolver(schema), mode: "onBlur", defaultValues: { name: "", email: "", number: "", subject: "", message: "" }
+  });
+  const sendEmail = async data => {
     try {
-      const emailData = {
-        subject: data.subject,
-        name: data.name,
-        email: data.email,
-        number: data.number,
-        message: data.message,
-      };
-
-      await emailjs.send(
-        "service_fpz92le",
-        "template_8082bd8",
-        emailData,
-        "lumHRW6doBVW8kgam"
-      );
-
-      toast.success("Mensagem enviada com sucesso!", { theme: "dark" });
+      await emailjs.send("service_fpz92le", "template_8082bd8", {
+        name: data.name.trim(), email: data.email.trim(), number: data.number.trim(),
+        subject: data.subject.trim(), message: data.message.trim(),
+      }, "lumHRW6doBVW8kgam");
+      toast.success("Mensagem enviada! Obrigado pelo contato.", { theme: "dark" });
       reset();
     } catch (error) {
-      toast.error("Não foi possível enviar. Tente novamente ou use o e-mail de contato.", { theme: "dark" });
+      console.error("Falha no envio de contato", error);
+      toast.error("Não foi possível enviar agora. Você também pode entrar em contato por e-mail.", { theme: "dark" });
     }
   };
-
   return (
     <>
       <FormDeddy noValidate onSubmit={handleSubmit(sendEmail)}>
-        <Subtitles>Fale Comigo</Subtitles>
+        <div className="form-heading">
+          <span className="form-eyebrow">CONTATO DIRETO</span>
+          <h2>Conte sua ideia</h2>
+          <p>Preencha os campos abaixo. Respondo assim que possível.</p>
+        </div>
         <FormContainer>
           <div>
-            <Input id="contact-name" aria-label="Nome completo" aria-invalid={!!errors.name}
-              autoComplete="name" {...register("name")} placeholder="Nome completo" />
-            {errors.name && <Span role="alert">{errors.name.message}</Span>}
+            <label htmlFor="contact-name">Seu nome <span aria-hidden="true">*</span></label>
+            <Input id="contact-name" autoComplete="name" placeholder="Como posso chamar você?" aria-invalid={!!errors.name} aria-describedby={errors.name ? "name-error" : undefined} {...register("name")} />
+            {errors.name && <Span id="name-error" role="alert">{errors.name.message}</Span>}
           </div>
           <div>
-            <Input id="contact-email" type="email" aria-label="E-mail" aria-invalid={!!errors.email}
-              autoComplete="email" {...register("email")} placeholder="E-mail" />
-            {errors.email && <Span role="alert">{errors.email.message}</Span>}
+            <label htmlFor="contact-email">Seu e-mail <span aria-hidden="true">*</span></label>
+            <Input id="contact-email" type="email" autoComplete="email" placeholder="voce@exemplo.com" aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} {...register("email")} />
+            {errors.email && <Span id="email-error" role="alert">{errors.email.message}</Span>}
           </div>
           <div>
-            <Input id="contact-phone" type="tel" aria-label="Telefone com DDD" aria-invalid={!!errors.number}
-              autoComplete="tel" {...register("number")} placeholder="Telefone com DDD" />
-            {errors.number && <Span role="alert">{errors.number.message}</Span>}
+            <label htmlFor="contact-phone">Telefone <small>(opcional)</small></label>
+            <Input id="contact-phone" type="tel" autoComplete="tel" inputMode="tel" placeholder="(21) 99999-9999" aria-invalid={!!errors.number} aria-describedby={errors.number ? "phone-error" : undefined} {...register("number")} />
+            {errors.number && <Span id="phone-error" role="alert">{errors.number.message}</Span>}
           </div>
           <div>
-            <Input id="contact-subject" aria-label="Assunto" aria-invalid={!!errors.subject}
-              {...register("subject")} placeholder="Assunto" />
-            {errors.subject && <Span role="alert">{errors.subject.message}</Span>}
+            <label htmlFor="contact-subject">Assunto <span aria-hidden="true">*</span></label>
+            <Input id="contact-subject" placeholder="Ex.: Projeto de site" aria-invalid={!!errors.subject} aria-describedby={errors.subject ? "subject-error" : undefined} {...register("subject")} />
+            {errors.subject && <Span id="subject-error" role="alert">{errors.subject.message}</Span>}
           </div>
           <div>
-            <Area id="contact-message" aria-label="Mensagem" aria-invalid={!!errors.message}
-              rows="6" {...register("message")} placeholder="Mensagem" />
-            {errors.message && <Span role="alert">{errors.message.message}</Span>}
+            <label htmlFor="contact-message">Sua mensagem <span aria-hidden="true">*</span></label>
+            <Area id="contact-message" rows="5" placeholder="Conte o que você precisa, seus objetivos e como posso ajudar..." aria-invalid={!!errors.message} aria-describedby={errors.message ? "message-error" : undefined} {...register("message")} />
+            {errors.message && <Span id="message-error" role="alert">{errors.message.message}</Span>}
           </div>
         </FormContainer>
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Enviando..." : "Enviar"}
-        </Button>
+        <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Enviando mensagem..." : "Enviar mensagem ↗"}</Button>
+        <p className="form-note">* Campos obrigatórios. Se preferir, escreva diretamente para <a href="mailto:pietro.candido.work@gmail.com">meu e-mail</a>.</p>
       </FormDeddy>
       <ToastContainer position="top-right" autoClose={4000} />
     </>
   );
 };
-
 export default Form;
