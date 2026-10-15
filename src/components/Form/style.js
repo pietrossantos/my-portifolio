@@ -22,6 +22,8 @@ export const FormDeddy=styled.form`
   .form-eyebrow{font-size:11px;letter-spacing:.18em;color:#73e996;font-weight:700}
   .form-note{text-align:center;margin:20px 0 0}
   .form-note a{color:#8bf6a8}
+  .send-status{align-self:stretch;color:#b9f1c6;font-size:13px;line-height:1.5;min-height:1.5em;margin:0 0 12px;text-align:center}
+  [aria-invalid="true"]{border-color:#f18c8c;box-shadow:0 0 0 1px rgba(241,140,140,.16)}
   h2{color:#ecfff0;text-align:left}
   @media(max-width:680px){min-height:0;padding:26px 18px}
 `;
