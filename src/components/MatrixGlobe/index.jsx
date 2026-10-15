@@ -22,14 +22,16 @@ const Globe = () => {
     let width = 440, height = 440, lastX = null;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const resize = () => {
-      const bounds = canvas.getBoundingClientRect();
+      const bounds = canvas.parentElement.getBoundingClientRect();
       width = bounds.width || 440; height = bounds.height || 440;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
-    const observer = new ResizeObserver(resize);
-    observer.observe(canvas); resize();
+    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(resize) : null;
+    observer?.observe(canvas.parentElement);
+    window.addEventListener("resize", resize);
+    resize();
     const project = (lat, lon, radius, cx, cy) => {
       const la = lat * PI / 180, lo = lon * PI / 180 + angle;
       const x = Math.cos(la) * Math.sin(lo);
