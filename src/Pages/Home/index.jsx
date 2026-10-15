@@ -21,7 +21,7 @@ const Hero = styled.section`
   p { max-width: 570px; color: #b8cdbb; font-size: clamp(1rem, 1.4vw, 1.13rem); line-height: 1.8; }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
   .actions a { text-decoration: none; padding: 14px 22px; border-radius: 10px; font-weight: 700; transition: transform .2s, border-color .2s; }
-  .actions a:hover { transform: translateY(-3px); }
+  .actions a:hover { transform: translateY(-3px); box-shadow: 0 0 22px rgba(91,239,131,.18); }
   .primary { background: linear-gradient(115deg, #42ce6b, #a1f7b0); color: #061323; }
   .secondary { border: 1px solid #326742; color: #d9f9df; }
   @media (max-width: 800px) { grid-template-columns: 1fr; min-height: auto; gap: 0; padding-top: 30px; .visual { max-width: 420px; margin: 10px auto 0; width: 100%; } }
@@ -34,7 +34,8 @@ const Section = styled.section`
   .about { display: grid; grid-template-columns: 1fr 160px; align-items: center; gap: 28px; }
   .about img { width: 160px; height: 160px; object-fit: cover; border-radius: 18px; border: 1px solid #3eaa61; }
   .chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
-  .chips span { padding: 9px 13px; border: 1px solid #2b6240; border-radius: 100px; color: #a5f4b5; font-size: .85rem; }
+  .chips span { transition: border-color .25s, background .25s; padding: 9px 13px; border: 1px solid #2b6240; border-radius: 100px; color: #a5f4b5; font-size: .85rem; }
+  .chips span:hover { border-color: #6be994; background: rgba(70,190,99,.08); }
   @media (max-width: 600px) { .about { grid-template-columns: 1fr; } .about img { width: 120px; height: 120px; } }
 `;
 const Footer = styled.footer`
@@ -47,7 +48,7 @@ const Home = () => (
     <Header />
     <Page>
       <Hero>
-        <div>
+        <div className="reveal">
           <span className="eyebrow">Front-end Developer · Rio de Janeiro</span>
           <h1>Olá, eu sou <span>Pietro Candido.</span></h1>
           <p>Transformo ideias em experiências digitais. Desenvolvo interfaces modernas e responsivas com React, JavaScript e atenção aos detalhes.</p>
@@ -56,10 +57,10 @@ const Home = () => (
             <Link className="secondary" to="/contact">Entrar em contato</Link>
           </div>
         </div>
-        <div className="visual"><MatrixGlobe /></div>
+        <div className="visual reveal" data-delay="1"><MatrixGlobe /></div>
       </Hero>
       <Section>
-        <div className="panel about">
+        <div className="panel about reveal">
           <div>
             <h2>Sobre mim</h2>
             <p>Sou desenvolvedor Front-end do Rio de Janeiro, com experiência na criação de páginas web e componentes reutilizáveis. Atuei na Web Social e concluí a formação Front-end da Vai na Web (191 horas). Gosto de unir código, criatividade e interfaces que funcionam bem em diferentes telas.</p>
@@ -69,7 +70,7 @@ const Home = () => (
         </div>
       </Section>
       <Section>
-        <div className="panel">
+        <div className="panel reveal">
           <h2>Vamos construir algo juntos?</h2>
           <p>Estou aberto a oportunidades de desenvolvimento Front-end e a novos desafios.</p>
           <div className="chips">
