@@ -11,7 +11,6 @@ const links = [
 const Header = () => (
   <NavHeader>
     <NavLink className="brand" to="/" aria-label="Pietro Candido, voltar ao início">
-      <span className="brand-mark">PC<span>.</span></span>
       <span className="brand-name">PIETRO CANDIDO</span>
     </NavLink>
     <NavPosition aria-label="Navegação principal">
