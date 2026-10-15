@@ -33,7 +33,7 @@ const Wrap = styled.main`
   .art.asteroid { background:radial-gradient(circle,#18353b,#061013 74%); }
   .art svg { width:100%; height:100%; }
   .placeholder { height: 300px; display: grid; place-items: center; text-align: center; padding: 25px; background: radial-gradient(circle at 50% 35%, #194d29, #08170e 70%); border-bottom: 1px solid #285c37; }
-  .placeholder span { font-family: "Space Grotesk", sans-serif; font-size: clamp(23px, 3vw, 36px); letter-spacing: -.035em; font-weight: 700; color: #8df7a5; }
+  .placeholder span { font-family: "Oxanium", "Space Grotesk", sans-serif; font-size: clamp(23px, 3vw, 36px); letter-spacing: -.035em; font-weight: 700; color: #8df7a5; }
   .content { padding: clamp(20px, 3vw, 30px); }
   .category { color: #7bf39b; font-size: 12px; letter-spacing: .07em; font-weight: 700; }
   h2 { color: #f2fbff; font-size: clamp(1.4rem, 2.4vw, 1.9rem); margin: 12px 0; }
