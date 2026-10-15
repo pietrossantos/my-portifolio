@@ -8,11 +8,11 @@ export const NavHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   gap: 24px;
-  border-bottom: 1px solid rgba(81, 194, 178, .15);
-  background: rgba(6, 16, 30, .94);
+  border-bottom: 1px solid rgba(81, 194, 102, .18);
+  background: rgba(6, 18, 9, .94);
   .brand { display: flex; align-items: center; gap: 12px; color: #eaf8ff; text-decoration: none; white-space: nowrap; }
   .brand-mark { font-size: 26px; font-weight: 800; letter-spacing: -.08em; color: #e8f9ff; }
-  .brand-mark span { color: #54e7af; }
+  .brand-mark span { color: #73ee93; }
   .brand-name { font-size: 12px; letter-spacing: .16em; font-weight: 700; }
   @media (max-width: 760px) {
     flex-direction: column;
@@ -27,9 +27,9 @@ export const NavPosition = styled.ul`
   justify-content: center;
   flex-wrap: wrap;
   gap: clamp(10px, 2.5vw, 30px);
-  a { color: #a8bfce; text-decoration: none; display: block; padding: 9px 3px; border-bottom: 2px solid transparent; }
-  a:hover, a.active { color: #6df2be; border-bottom-color: #57d9b0; }
-  a:focus-visible { outline: 2px solid #57d9b0; outline-offset: 3px; }
+  a { color: #afc9b4; text-decoration: none; display: block; padding: 9px 3px; border-bottom: 2px solid transparent; }
+  a:hover, a.active { color: #78f39a; border-bottom-color: #62db82; }
+  a:focus-visible { outline: 2px solid #62db82; outline-offset: 3px; }
 `;
 export const NavTitles = styled.span`
   font-size: clamp(12px, 1.2vw, 15px);
