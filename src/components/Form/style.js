@@ -22,7 +22,12 @@ export const FormDeddy=styled.form`
   .form-eyebrow{font-size:11px;letter-spacing:.18em;color:#73e996;font-weight:700}
   .form-note{text-align:center;margin:20px 0 0}
   .form-note a{color:#8bf6a8}
-  .send-status{align-self:stretch;color:#b9f1c6;font-size:13px;line-height:1.5;min-height:1.5em;margin:0 0 12px;text-align:center}
+  .send-status{align-self:stretch;display:flex;align-items:center;gap:12px;padding:14px 16px;margin:0 0 18px;border:1px solid #417d54;border-radius:12px;background:#112e1c;color:#d7f8df;font-size:14px;line-height:1.5;text-align:left}
+  .send-status>span:first-child{flex:none;display:grid;place-items:center;width:27px;height:27px;border-radius:50%;font-weight:800;background:rgba(125,235,154,.18)}
+  .send-status.success{border-color:#4eac69;background:#10391e;color:#d4ffe0}
+  .send-status.error{border-color:#b95c64;background:#35171d;color:#ffd7dc}
+  .send-status.error>span:first-child{background:rgba(255,130,144,.16)}
+  .send-status.loading{border-color:#4c8272;background:#102d29;color:#d5f9ed}
   [aria-invalid="true"]{border-color:#f18c8c;box-shadow:0 0 0 1px rgba(241,140,140,.16)}
   h2{color:#ecfff0;text-align:left}
   @media(max-width:680px){min-height:0;padding:26px 18px}
