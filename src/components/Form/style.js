@@ -16,6 +16,7 @@ export const FormDeddy=styled.form`
   border-radius:22px;box-shadow:0 0 35px rgba(21,124,47,.08),inset 0 0 28px rgba(20,99,38,.09);
   transition:box-shadow .4s ease,border-color .4s ease;
   &:focus-within{border-color:rgba(94,255,139,.75);box-shadow:0 0 34px rgba(42,210,88,.13)}
+  .honeypot{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;pointer-events:none!important}
   .form-heading{width:100%;text-align:left}
   .form-heading h2{font-family:"Oxanium","Space Grotesk",sans-serif;font-size:clamp(25px,3vw,32px);margin:8px 0;color:#ecfff0}
   .form-heading p,.form-note{color:#a9c1ae;line-height:1.65;font-size:14px}
