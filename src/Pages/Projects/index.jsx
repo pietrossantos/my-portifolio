@@ -20,7 +20,8 @@ const Wrap = styled.main`
   .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   .card { border: 1px solid #2a5b39; border-radius: 22px; overflow: hidden; background: linear-gradient(145deg, #102719, #07150c); box-shadow: 0 12px 40px rgba(0,0,0,.17); transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
   .card:hover { transform: translateY(-5px); border-color: #67eb8c; box-shadow: 0 18px 50px rgba(28,129,48,.15); }
-  .image { display: block; width: 100%; height: 300px; object-fit: contain; object-position: center; padding: 18px; background: radial-gradient(circle at center, #15391e, #08170e 72%); border-bottom: 1px solid #285c37; transition: transform .35s ease; }\n  .card:hover .image { transform: scale(1.025); }
+  .image { display: block; width: 100%; height: 300px; object-fit: contain; object-position: center; padding: 18px; background: radial-gradient(circle at center, #15391e, #08170e 72%); border-bottom: 1px solid #285c37; transition: transform .35s ease; }
+  .card:hover .image { transform: scale(1.025); }
   .placeholder { height: 300px; display: grid; place-items: center; text-align: center; padding: 25px; background: radial-gradient(circle at 50% 35%, #194d29, #08170e 70%); border-bottom: 1px solid #285c37; }
   .placeholder span { font-family: "Space Grotesk", sans-serif; font-size: clamp(23px, 3vw, 36px); letter-spacing: -.035em; font-weight: 700; color: #8df7a5; }
   .content { padding: clamp(20px, 3vw, 30px); }
