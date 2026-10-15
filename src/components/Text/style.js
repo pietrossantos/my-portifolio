@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import device from "../../devices";
-import Button from "./../Button/index";
 
 export const TextStyle = styled.p`
   width: 450px;
