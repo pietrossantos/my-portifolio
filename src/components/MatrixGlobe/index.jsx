@@ -1,84 +1,114 @@
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
-const Stage = styled.div`
-  position: relative;
-  width: min(440px, 100%);
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  isolation: isolate;
-  touch-action: pan-y;
-  user-select: none;
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 12%;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(28, 220, 167, .17), rgba(15, 81, 133, .10) 50%, transparent 73%);
-    filter: blur(24px);
-    z-index: -1;
-  }
-  .orbit { position: absolute; inset: 3%; width: 94%; height: 94%; border: 1px solid rgba(67, 238, 189, .18); border-radius: 50%; transform: rotate(-22deg) scaleY(.76); }
-  .orbit.two { transform: rotate(42deg) scaleY(.84); border-color: rgba(57, 163, 247, .20); }
-  svg { width: 88%; height: 88%; overflow: visible; filter: drop-shadow(0 0 22px rgba(34, 233, 177, .25)); transition: transform .22s ease-out; }
-  .globe-line { fill: none; stroke: #55f5c6; stroke-width: 1.2; opacity: .55; }
-  .globe-blue { stroke: #4caaff; opacity: .35; }
-  .globe-dot { fill: #9affd6; filter: drop-shadow(0 0 3px #5bffc8); }
-  .globe-ring { fill: none; stroke: #42e9c0; stroke-width: 1; opacity: .4; stroke-dasharray: 5 9; }
-  .core { fill: url(#globeCore); stroke: rgba(94, 255, 201, .7); stroke-width: 1.5; }\n  .code-particle { fill: #7affbd; font-size: 9px; font-family: monospace; opacity: .6; }
-  .scan { animation: pulse 3.8s ease-in-out infinite alternate; }\n  .orbit { animation: orbit 24s linear infinite; }\n  .orbit.two { animation: orbitTwo 32s linear infinite reverse; }\n  @keyframes orbit { from { transform: rotate(-22deg) scaleY(.76); } to { transform: rotate(338deg) scaleY(.76); } }\n  @keyframes orbitTwo { from { transform: rotate(42deg) scaleY(.84); } to { transform: rotate(402deg) scaleY(.84); } }
-  @keyframes pulse { from { opacity: .3; } to { opacity: .85; } }
-  @media (prefers-reduced-motion: reduce) { svg { transition: none; } .scan, .orbit { animation: none; } }
+const Shell = styled.div`
+  position: relative; width: min(520px,100%); aspect-ratio: 1; isolation: isolate;
+  &::before { content:""; position:absolute; inset:12%; border-radius:50%; background:radial-gradient(circle,rgba(33,255,107,.15),transparent 68%); filter:blur(27px); pointer-events:none; }
+  canvas { display:block; width:100%; height:100%; cursor:grab; touch-action:pan-y; }
+  canvas:active { cursor:grabbing; }
+  .label { position:absolute; bottom:4%; left:50%; transform:translateX(-50%); color:#6fe99a; font:600 10px "Space Grotesk",sans-serif; letter-spacing:.23em; white-space:nowrap; opacity:.7; pointer-events:none; }
+  @media (prefers-reduced-motion:reduce) { .label { opacity:.85; } }
 `;
 
-const latitudes = [-64, -43, -22, 0, 22, 43, 64];
-const longitudes = [-72, -48, -24, 0, 24, 48, 72];
-
-const MatrixGlobe = () => {
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const move = (event) => {
-    if (event.pointerType === "touch") return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width - .5;
-    const y = (event.clientY - rect.top) / rect.height - .5;
-    setTilt({ x: -y * 17, y: x * 17 });
-  };
-  return (
-    <Stage role="img" aria-label="Globo digital verde e azul com grade de coordenadas que acompanha o movimento do cursor" onPointerMove={move} onPointerLeave={() => setTilt({ x: 0, y: 0 })}>
-      <span className="orbit" /><span className="orbit two" />
-      <svg viewBox="0 0 400 400" style={{ transform: `perspective(650px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)` }} aria-hidden="true">
-        <defs>
-          <radialGradient id="globeCore" cx="35%" cy="25%" r="80%">
-            <stop offset="0%" stopColor="#153e5c" stopOpacity=".78" />
-            <stop offset="55%" stopColor="#071f32" stopOpacity=".9" />
-            <stop offset="100%" stopColor="#05101d" />
-          </radialGradient>
-          <clipPath id="globeClip"><circle cx="200" cy="200" r="145" /></clipPath>
-        </defs>
-        <circle cx="200" cy="200" r="175" className="globe-ring" />
-        <circle cx="200" cy="200" r="145" className="core" />
-        <g clipPath="url(#globeClip)">
-          {latitudes.map((latitude) => {
-            const rad = latitude * Math.PI / 180;
-            const ry = 145 * Math.cos(rad);
-            return <ellipse key={latitude} className="globe-line" cx="200" cy={200 - 145 * Math.sin(rad)} rx={ry} ry={ry * .23} />;
-          })}
-          {longitudes.map((longitude) => {
-            const rad = longitude * Math.PI / 180;
-            return <ellipse key={longitude} className="globe-line globe-blue" cx="200" cy="200" rx={Math.max(1, 145 * Math.abs(Math.cos(rad)))} ry="145" />;
-          })}
-          <path d="M62 195 Q200 135 338 195 M62 205 Q200 265 338 205" className="globe-line scan" />
-          {Array.from({ length: 30 }, (_, i) => {
-            const a = i * 2.39996, radius = Math.sqrt((i + .5) / 30) * 130;
-            return <circle key={i} className="globe-dot scan" cx={200 + Math.cos(a) * radius} cy={200 + Math.sin(a) * radius} r={i % 5 === 0 ? 2.8 : 1.4} />;
-          })}
-        </g>
-        <circle cx="200" cy="200" r="145" fill="none" stroke="#53ffca" strokeOpacity=".75" strokeWidth="1.5" />
-        <path d="M200 18 V40 M200 360 V382 M18 200 H40 M360 200 H382" stroke="#63e6cf" strokeWidth="2" />
-      </svg>
-    </Stage>
-  );
+const PI = Math.PI;
+const Globe = () => {
+  const canvasRef = useRef(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    let frame = 0, raf = 0, angle = .35, tilt = -.16, targetTilt = -.16, targetVelocity = .0038, velocity = .0038;
+    let width = 440, height = 440, hovering = false, lastX = null;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const resize = () => {
+      const bounds = canvas.getBoundingClientRect();
+      width = bounds.width || 440; height = bounds.height || 440;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    const observer = new ResizeObserver(resize);
+    observer.observe(canvas); resize();
+    const project = (lat, lon, radius, cx, cy) => {
+      const la = lat * PI / 180, lo = lon * PI / 180 + angle;
+      const x = Math.cos(la) * Math.sin(lo);
+      const y = Math.sin(la);
+      const z = Math.cos(la) * Math.cos(lo);
+      const yy = y * Math.cos(tilt) - z * Math.sin(tilt);
+      const zz = y * Math.sin(tilt) + z * Math.cos(tilt);
+      return { x: cx + x * radius, y: cy - yy * radius, z: zz };
+    };
+    const draw = () => {
+      frame++;
+      if (!reduceMotion) {
+        velocity += (targetVelocity - velocity) * .045;
+        angle += velocity;
+        tilt += (targetTilt - tilt) * .055;
+      }
+      ctx.clearRect(0,0,width,height);
+      const cx=width/2, cy=height/2, radius=Math.min(width,height)*.355;
+      const halo=ctx.createRadialGradient(cx,cy,radius*.25,cx,cy,radius*1.45);
+      halo.addColorStop(0,"rgba(8,68,25,.18)");halo.addColorStop(.7,"rgba(10,54,23,.13)");halo.addColorStop(1,"rgba(0,0,0,0)");
+      ctx.fillStyle=halo;ctx.fillRect(0,0,width,height);
+      const drawLine=(points,alpha,strokeWidth=1)=>{
+        for(let side of [-1,1]){
+          ctx.beginPath();let started=false;
+          for(const p of points){
+            if((side===1 && p.z < 0)||(side===-1 && p.z >= 0)){started=false;continue;}
+            if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);
+          }
+          ctx.strokeStyle=`rgba(48,255,103,${alpha*(side===1?1:.17)})`;
+          ctx.lineWidth=strokeWidth;ctx.stroke();
+        }
+      };
+      // Latitude and longitude wireframe: every line follows the sphere's rotation.
+      for(let lat=-75;lat<=75;lat+=15){
+        const pts=[];for(let lon=-180;lon<=180;lon+=3)pts.push(project(lat,lon,radius,cx,cy));
+        drawLine(pts,.42,.85);
+      }
+      for(let lon=0;lon<360;lon+=15){
+        const pts=[];for(let lat=-90;lat<=90;lat+=3)pts.push(project(lat,lon,radius,cx,cy));
+        drawLine(pts,.45,.9);
+      }
+      // Dense matrix-like points distributed over the sphere.
+      for(let i=0;i<680;i++){
+        const y=1-2*(i+.5)/680;
+        const lat=Math.asin(y)*180/PI;
+        const lon=i*137.507764;
+        const p=project(lat,lon,radius,cx,cy);
+        if(p.z<0)continue;
+        const twinkle=.6+.4*Math.sin(i*1.73+frame*.025);
+        const a=(.22+.67*p.z)*twinkle;
+        ctx.fillStyle=`rgba(110,255,141,${a})`;
+        const size=(i%13===0?1.9:1.05)*(0.7+0.35*p.z);
+        ctx.fillRect(p.x-size/2,p.y-size/2,size,size);
+      }
+      const edge=ctx.createRadialGradient(cx,cy,radius*.6,cx,cy,radius*1.05);
+      edge.addColorStop(0,"rgba(0,0,0,0)");edge.addColorStop(.86,"rgba(23,210,70,.03)");edge.addColorStop(1,"rgba(65,255,116,.14)");
+      ctx.fillStyle=edge;ctx.beginPath();ctx.arc(cx,cy,radius,0,2*PI);ctx.fill();
+      ctx.beginPath();ctx.arc(cx,cy,radius,0,2*PI);
+      ctx.strokeStyle="rgba(81,255,123,.58)";ctx.lineWidth=1.3;ctx.shadowColor="#36ff70";ctx.shadowBlur=14;ctx.stroke();ctx.shadowBlur=0;
+      // Subtle scanning arc.
+      const scanY=cy+Math.sin(frame*.014)*radius*.72;
+      ctx.beginPath();ctx.ellipse(cx,scanY,radius*.85,Math.max(2,radius*.085),0,0,2*PI);
+      ctx.strokeStyle="rgba(68,255,110,.065)";ctx.stroke();
+      if(!reduceMotion)raf=requestAnimationFrame(draw);
+    };
+    const move=(event)=>{
+      if(event.pointerType==="touch")return;
+      const rect=canvas.getBoundingClientRect();
+      const x=(event.clientX-rect.left)/rect.width-.5;
+      const y=(event.clientY-rect.top)/rect.height-.5;
+      targetTilt=Math.max(-.55,Math.min(.55,y*.85));
+      if(lastX!==null)targetVelocity=Math.max(-.022,Math.min(.022,(event.clientX-lastX)*.0016+.003));
+      lastX=event.clientX;hovering=true;
+    };
+    const leave=()=>{hovering=false;lastX=null;targetTilt=-.16;targetVelocity=.0038;};
+    canvas.addEventListener("pointermove",move);canvas.addEventListener("pointerleave",leave);
+    draw();
+    return ()=>{cancelAnimationFrame(raf);observer.disconnect();canvas.removeEventListener("pointermove",move);canvas.removeEventListener("pointerleave",leave);};
+  },[]);
+  return <Shell><canvas ref={canvasRef} role="img" aria-label="Globo tridimensional Matrix, com linhas de latitude e longitude verdes, pontos luminosos e rotação interativa" /><span className="label">DIGITAL WORLD // 001</span></Shell>;
 };
-
-export default MatrixGlobe;
+export default Globe;
