@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import ProjectDetailsModal from "../../components/ProjectDetailsModal";
 import Header from "../../components/Header";
 import calculatorImage from "../../assets/img/mobile (3).png";
 import khrisImage from "../../assets/img/mobile (4).png";
@@ -71,6 +72,8 @@ const Wrap = styled.main`
   .description { color: #b8cdbb; line-height: 1.75; min-height: 90px; }
   .tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0 25px; }
   .tags span { border: 1px solid #2c6240; color: #b0e8bb; border-radius: 99px; padding: 7px 11px; font-size: 12px; }
+  .details-button { border: 1px solid #5b9d6c; background: rgba(42,119,63,.18); color: #d4ffe0; cursor: pointer; font: 700 14px inherit; border-radius: 9px; padding: 12px 16px; }
+  .details-button:hover, .details-button:focus-visible { border-color: #a1f7b0; background: rgba(65,166,90,.25); }
   .links { display: flex; flex-wrap: wrap; gap: 10px; }
   .links a { text-decoration: none; font-weight: 700; border-radius: 9px; padding: 12px 16px; transition: filter .2s; }
   .links a:hover { filter: brightness(1.2); box-shadow: 0 0 18px rgba(92,232,122,.13); }
@@ -92,6 +95,8 @@ const moveSpotlight = (event) => {
 const Projects = () => {
   const [activeFilter, setActiveFilter] = useState("Todos");
   const [search, setSearch] = useState("");
+  const [selectedProject, setSelectedProject] = useState(null);
+  const closeDetails = useCallback(() => setSelectedProject(null), []);
   const currentFilter = filters.find(filter => filter.label === activeFilter) ?? filters[0];
   const normalize = value => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR");
   const normalizedSearch = normalize(search.trim());
@@ -142,6 +147,7 @@ const Projects = () => {
               <p className="description">{project.description}</p>
               <div className="tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
               <div className="links">
+                <button type="button" className="details-button" onClick={() => setSelectedProject(project)} aria-label={`Ver detalhes de ${project.title}`}>Detalhes +</button>
                 {project.live && <a className="primary" href={project.live} target="_blank" rel="noopener noreferrer" aria-label={`Abrir demonstração de ${project.title}`}>Ver projeto ↗</a>}
                 <a className="secondary" href={project.github} target="_blank" rel="noopener noreferrer" aria-label={`Ver código de ${project.title} no GitHub`}>Código no GitHub ↗</a>
               </div>
@@ -151,6 +157,7 @@ const Projects = () => {
       </div>
       <p className="footnote">Os trabalhos realizados em equipe são apresentados com indicação da minha participação. Alguns links externos podem mudar conforme a disponibilidade dos sites.</p>
     </Wrap>
+    <ProjectDetailsModal project={selectedProject} onClose={closeDetails} />
   </>
 );
 
