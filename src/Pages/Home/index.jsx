@@ -1,30 +1,87 @@
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 import Header from "../../components/Header";
+import MatrixGlobe from "../../components/MatrixGlobe";
 import MyImage from "../../assets/img/MyImage.png";
-import Subtitle from "../../components/Subtitles";
-import ParagraphAbout from "../../components/ParagraphAbout";
-import Form from "../../components/Form";
-import { PositionMain, BoxSection } from "./style";
 
-const Home = () => {
-  return (
-    <>
+const Page = styled.main`
+  width: min(1160px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 44px 0 80px;
+`;
+const Hero = styled.section`
+  min-height: min(680px, 78vh);
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  align-items: center;
+  gap: 36px;
+  .eyebrow { display: inline-block; color: #65edb6; letter-spacing: .16em; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 22px; }
+  h1 { color: #f3fbff; font-size: clamp(2.5rem, 5.6vw, 5.2rem); line-height: 1.07; letter-spacing: -.045em; margin-bottom: 24px; }
+  h1 span { color: #57e5b0; }
+  p { max-width: 570px; color: #b7c9d7; font-size: clamp(1rem, 1.4vw, 1.13rem); line-height: 1.8; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .actions a { text-decoration: none; padding: 14px 22px; border-radius: 10px; font-weight: 700; transition: transform .2s, border-color .2s; }
+  .actions a:hover { transform: translateY(-3px); }
+  .primary { background: linear-gradient(115deg, #4ae0ac, #3baaf5); color: #061323; }
+  .secondary { border: 1px solid #2f6076; color: #d9f9fa; }
+  @media (max-width: 800px) { grid-template-columns: 1fr; min-height: auto; gap: 0; padding-top: 30px; .visual { max-width: 420px; margin: 10px auto 0; width: 100%; } }
+`;
+const Section = styled.section`
+  margin-top: 80px;
+  h2 { color: #f3fbff; font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 18px; }
+  p { color: #b7c9d7; line-height: 1.85; }
+  .panel { border: 1px solid #21465b; background: linear-gradient(145deg, rgba(11, 38, 57, .9), rgba(6, 18, 34, .92)); border-radius: 20px; padding: clamp(22px, 4vw, 40px); }
+  .about { display: grid; grid-template-columns: 1fr 160px; align-items: center; gap: 28px; }
+  .about img { width: 160px; height: 160px; object-fit: cover; border-radius: 18px; border: 1px solid #3a9e99; }
+  .chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .chips span { padding: 9px 13px; border: 1px solid #255b68; border-radius: 100px; color: #8ee8c7; font-size: .85rem; }
+  @media (max-width: 600px) { .about { grid-template-columns: 1fr; } .about img { width: 120px; height: 120px; } }
+`;
+const Footer = styled.footer`
+  padding: 45px 0 10px; color: #7995a8; font-size: .85rem; text-align: center;
+  a { color: #75eec3; }
+`;
+
+const Home = () => (
+  <>
     <Header />
-    <BoxSection>
-      <PositionMain>
+    <Page>
+      <Hero>
         <div>
-          <Subtitle children="Sobre Mim" />
-          <ParagraphAbout />
+          <span className="eyebrow">Front-end Developer · Rio de Janeiro</span>
+          <h1>Olá, eu sou <span>Pietro Candido.</span></h1>
+          <p>Transformo ideias em experiências digitais. Desenvolvo interfaces modernas e responsivas com React, JavaScript e atenção aos detalhes.</p>
+          <div className="actions">
+            <Link className="primary" to="/projects">Explorar projetos ↗</Link>
+            <Link className="secondary" to="/contact">Entrar em contato</Link>
+          </div>
         </div>
-        <img
-          style={{ width: "300px", borderRadius: "15px" }}
-          src={MyImage}
-          alt="MyImage"
-        />
-      </PositionMain>
-      <Form />
-    </BoxSection>
-    </>
-  );
-};
+        <div className="visual"><MatrixGlobe /></div>
+      </Hero>
+      <Section>
+        <div className="panel about">
+          <div>
+            <h2>Sobre mim</h2>
+            <p>Sou desenvolvedor Front-end do Rio de Janeiro, com experiência na criação de páginas web e componentes reutilizáveis. Atuei na Web Social e concluí a formação Front-end da Vai na Web (191 horas). Gosto de unir código, criatividade e interfaces que funcionam bem em diferentes telas.</p>
+            <div className="chips"><span>React.js</span><span>JavaScript</span><span>HTML & CSS</span><span>Styled-components</span><span>Git & GitHub</span></div>
+          </div>
+          <img src={MyImage} alt="Foto de Pietro Candido" loading="lazy" />
+        </div>
+      </Section>
+      <Section>
+        <div className="panel">
+          <h2>Vamos construir algo juntos?</h2>
+          <p>Estou aberto a oportunidades de desenvolvimento Front-end e a novos desafios.</p>
+          <div className="chips">
+            <span><a href="mailto:pietro.candido.work@gmail.com" style={{ color: "inherit" }}>E-mail profissional ↗</a></span>
+            <span><a href="https://github.com/pietrossantos" target="_blank" rel="noopener noreferrer" style={{ color: "inherit" }}>GitHub ↗</a></span>
+            <span><Link to="/skills" style={{ color: "inherit" }}>Minhas habilidades ↗</Link></span>
+          </div>
+        </div>
+      </Section>
+      <Footer>© {new Date().getFullYear()} Pietro Candido · Desenvolvido com React.</Footer>
+    </Page>
+  </>
+);
 
 export default Home;
