@@ -1,7 +1,11 @@
 import styled from "styled-components";
 export const FormContainer = styled.section`
   display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;width:100%;margin:22px 0;
-  >div{min-width:0;display:flex;flex-direction:column;gap:7px}\n  label{color:#d9f8df;font-size:14px;font-weight:600}\n  label span{color:#7df39d}\n  label small{font-weight:400;color:#9fb5a4} >div:last-child{grid-column:1/-1}
+  >div{min-width:0;display:flex;flex-direction:column;gap:7px}
+  label{color:#d9f8df;font-size:14px;font-weight:600}
+  label span{color:#7df39d}
+  label small{font-weight:400;color:#9fb5a4}
+  >div:last-child{grid-column:1/-1}
   @media(max-width:620px){grid-template-columns:1fr;>div:last-child{grid-column:auto}}
 `;
 export const Span=styled.span`display:block;color:#ff9a9a;margin-top:7px;font-size:13px;`;
@@ -12,7 +16,13 @@ export const FormDeddy=styled.form`
   border-radius:22px;box-shadow:0 0 35px rgba(21,124,47,.08),inset 0 0 28px rgba(20,99,38,.09);
   transition:box-shadow .4s ease,border-color .4s ease;
   &:focus-within{border-color:rgba(94,255,139,.75);box-shadow:0 0 34px rgba(42,210,88,.13)}
-  .form-heading{width:100%;text-align:left}\n  .form-heading h2{font-family:"Space Grotesk",sans-serif;font-size:clamp(25px,3vw,32px);margin:8px 0;color:#ecfff0}\n  .form-heading p,.form-note{color:#a9c1ae;line-height:1.65;font-size:14px}\n  .form-eyebrow{font-size:11px;letter-spacing:.18em;color:#73e996;font-weight:700}\n  .form-note{text-align:center;margin:20px 0 0}\n  .form-note a{color:#8bf6a8}\n  h2{color:#ecfff0;text-align:left}
+  .form-heading{width:100%;text-align:left}
+  .form-heading h2{font-family:"Oxanium","Space Grotesk",sans-serif;font-size:clamp(25px,3vw,32px);margin:8px 0;color:#ecfff0}
+  .form-heading p,.form-note{color:#a9c1ae;line-height:1.65;font-size:14px}
+  .form-eyebrow{font-size:11px;letter-spacing:.18em;color:#73e996;font-weight:700}
+  .form-note{text-align:center;margin:20px 0 0}
+  .form-note a{color:#8bf6a8}
+  h2{color:#ecfff0;text-align:left}
   @media(max-width:680px){min-height:0;padding:26px 18px}
 `;
 const field=`
