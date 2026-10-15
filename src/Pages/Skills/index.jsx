@@ -12,7 +12,8 @@ const Layout = styled.main`
   h1 { color: #f3fcff; font-size: clamp(2.5rem, 5vw, 4.5rem); margin: 14px 0; letter-spacing: -.04em; }
   .intro { color: #b8cdbb; line-height: 1.8; max-width: 650px; margin-bottom: 42px; }
   .grid { display: grid; gap: 20px; }
-  section { border: 1px solid #2c613c; border-radius: 20px; background: linear-gradient(125deg, #102719, #07150c); padding: clamp(22px, 4vw, 34px); }
+  section { transition: border-color .25s, box-shadow .25s; border: 1px solid #2c613c; border-radius: 20px; background: linear-gradient(125deg, #102719, #07150c); padding: clamp(22px, 4vw, 34px); }
+  section:hover { border-color:#65d98a; box-shadow:0 12px 35px rgba(37,132,67,.1); }
   h2 { font-size: clamp(1.35rem, 2.6vw, 1.8rem); margin: 0 0 8px; color: #eafaff; }
   section p { color: #8da9ba; margin: 0 0 24px; }
   ul { display: flex; gap: 12px; flex-wrap: wrap; padding: 0; margin: 0; list-style: none; }
@@ -22,11 +23,11 @@ const Skills = () => (
   <>
     <Header />
     <Layout>
-      <span className="eyebrow">Tecnologias / Aprendizado contínuo</span>
-      <h1>Habilidades & ferramentas.</h1>
-      <p className="intro">Tecnologias que aplico em projetos e conhecimentos que venho desenvolvendo para criar experiências web cada vez melhores.</p>
+      <span className="eyebrow reveal">Tecnologias / Aprendizado contínuo</span>
+      <h1 className="reveal">Habilidades & ferramentas.</h1>
+      <p className="intro reveal">Tecnologias que aplico em projetos e conhecimentos que venho desenvolvendo para criar experiências web cada vez melhores.</p>
       <div className="grid">{groups.map(group => (
-        <section key={group.title}>
+        <section className="reveal" key={group.title}>
           <h2>{group.title}</h2><p>{group.subtitle}</p>
           <ul>{group.items.map(item => <li key={item}>{item}</li>)}</ul>
         </section>
