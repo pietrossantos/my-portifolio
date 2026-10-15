@@ -1,6 +1,5 @@
 import { createGlobalStyle } from "styled-components";
 export const GlobalStyle=createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Oxanium:wght@400;500;600;700;800&display=swap');
   :root{color-scheme:dark;--green:#62ef8d;--green-soft:#b4f5c5;--surface:#0b1d12;--edge:#275839}
   *,*::before,*::after{box-sizing:border-box}
   html{scroll-behavior:smooth}
