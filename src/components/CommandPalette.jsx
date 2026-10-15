@@ -108,7 +108,7 @@ export default function CommandPalette() {
 
   const go = command => { navigate(command.path); setOpen(false); };
   const onKeys = event => {
-    if (event.key === "ArrowDown") { event.preventDefault(); setSelected(index => Math.min(index + 1, results.length - 1)); }
+    if (event.key === "ArrowDown") { event.preventDefault(); if (results.length) setSelected(index => Math.min(index + 1, results.length - 1)); }
     if (event.key === "ArrowUp") { event.preventDefault(); setSelected(index => Math.max(index - 1, 0)); }
     if (event.key === "Enter" && results[selected]) { event.preventDefault(); go(results[selected]); }
   };
