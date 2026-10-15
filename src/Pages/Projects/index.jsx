@@ -42,7 +42,7 @@ const Wrap = styled.main`
   .tags span { border: 1px solid #2c6240; color: #b0e8bb; border-radius: 99px; padding: 7px 11px; font-size: 12px; }
   .links { display: flex; flex-wrap: wrap; gap: 10px; }
   .links a { text-decoration: none; font-weight: 700; border-radius: 9px; padding: 12px 16px; transition: filter .2s; }
-  .links a:hover { filter: brightness(1.2); }
+  .links a:hover { filter: brightness(1.2); box-shadow: 0 0 18px rgba(92,232,122,.13); }
   .primary { background: linear-gradient(110deg, #41cc69, #91f5a7); color: #06150b; }
   .secondary { border: 1px solid #3b7650; color: #d4f9dd; }
   .footnote { margin-top: 34px; color: #8da994; font-size: 13px; line-height: 1.7; }
@@ -54,12 +54,12 @@ const Projects = () => (
   <>
     <Header />
     <Wrap>
-      <span className="eyebrow">Portfólio / Trabalhos selecionados</span>
-      <h1>Projetos que contam minha história.</h1>
-      <p className="intro">Uma seleção de interfaces, desafios pessoais e experiências de desenvolvimento em equipe. Cada projeto representa uma etapa da minha evolução como desenvolvedor Front-end.</p>
+      <span className="eyebrow reveal">Portfólio / Trabalhos selecionados</span>
+      <h1 className="reveal">Projetos que contam minha história.</h1>
+      <p className="intro reveal">Uma seleção de interfaces, desafios pessoais e experiências de desenvolvimento em equipe. Cada projeto representa uma etapa da minha evolução como desenvolvedor Front-end.</p>
       <div className="grid">
         {projects.map((project) => (
-          <article className="card" key={project.title}>
+          <article className="card reveal" key={project.title}>
             {project.preview === "asteroid" ? <div className="art asteroid" role="img" aria-label="Ilustração de um asteroide monitorado em órbita"><svg viewBox="0 0 500 300" aria-hidden="true"><defs><radialGradient id="rock"><stop stopColor="#b5b9a6"/><stop offset="1" stopColor="#45544f"/></radialGradient></defs>{Array.from({length:36},(_,i)=><circle key={i} cx={(i*97+29)%500} cy={(i*53+17)%300} r={i%5===0?1.6:.7} fill="#b1ffe0" opacity=".55"/>)}<ellipse cx="250" cy="150" rx="177" ry="68" fill="none" stroke="#5ce6b1" strokeWidth="1.5" opacity=".65" transform="rotate(-21 250 150)"/><ellipse cx="250" cy="150" rx="130" ry="114" fill="none" stroke="#5ce6b1" strokeDasharray="4 8" opacity=".25"/><path d="M212 97L253 77 301 96 326 131 310 172 270 201 222 192 183 157 189 121Z" fill="url(#rock)" stroke="#c1c8bb" strokeWidth="2"/><path d="M213 101L239 121 230 152 197 148M254 79L262 119 297 127 324 131M232 154L265 180 270 199" fill="none" stroke="#394841" strokeWidth="3"/><ellipse cx="242" cy="135" rx="15" ry="10" fill="#384942"/><ellipse cx="281" cy="164" rx="11" ry="7" fill="#394841"/><text x="44" y="44" fill="#a1f7ce" fontSize="12" letterSpacing="3">ASTEROID TRACKER</text><text x="303" y="263" fill="#a1f7ce" fontSize="10" letterSpacing="2">ORBITAL SCAN / 001</text></svg></div> : project.preview ? <div className={`art ${project.preview}`}><img src={project.image} alt={`Imagem original do projeto ${project.title}`} loading="lazy" /></div> : project.image ? <img className="image" src={project.image} alt={`Prévia do projeto ${project.title}`} loading="lazy" /> : <div className="placeholder" aria-hidden="true"><span>{project.title}</span></div>}
             <div className="content">
               <span className="category">{project.category}</span>
