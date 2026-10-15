@@ -13,7 +13,7 @@ export const NavHeader = styled.header`
   .brand { display: flex; align-items: center; gap: 12px; color: #eaf8ff; text-decoration: none; white-space: nowrap; }
   .brand-mark { font-size: 26px; font-weight: 800; letter-spacing: -.08em; color: #e8f9ff; }
   .brand-mark span { color: #73ee93; }
-  .brand-name { font-size: 12px; letter-spacing: .16em; font-weight: 700; }
+  .brand-name { font-family: "Oxanium", "Space Grotesk", sans-serif; font-size: 14px; letter-spacing: .11em; font-weight: 800; }
   @media (max-width: 760px) {
     flex-direction: column;
     gap: 16px;
@@ -32,6 +32,7 @@ export const NavPosition = styled.ul`
   a:focus-visible { outline: 2px solid #62db82; outline-offset: 3px; }
 `;
 export const NavTitles = styled.span`
+  font-family: "Oxanium", "Space Grotesk", sans-serif;
   font-size: clamp(12px, 1.2vw, 15px);
   font-weight: 600;
 `;
