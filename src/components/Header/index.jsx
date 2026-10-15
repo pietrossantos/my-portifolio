@@ -1,38 +1,29 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { NavHeader, NavPosition, NavTitles } from "./style";
-import Logo from "../../../src/assets/video/Logo.mp4";
 
-const Header = () => {
-  return (
-    <NavHeader>
-      <Link to="/" style={{ textDecoration: "none" }}>
-        <video 
-          width="150px"
-          height="150px"
-          src={Logo}
-          alt="Logo"
-          autoPlay
-          loop
-          muted
-        />
-      </Link>
+const links = [
+  { to: "/", label: "Início", end: true },
+  { to: "/projects", label: "Projetos" },
+  { to: "/skills", label: "Habilidades" },
+  { to: "/contact", label: "Contato" },
+];
 
-      <NavPosition>
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <NavTitles>Início </NavTitles>
-        </Link>
-        <Link to="/projects" style={{ textDecoration: "none" }}>
-          <NavTitles>Projetos </NavTitles>
-        </Link>
-        <Link to="/skills" style={{ textDecoration: "none" }}>
-          <NavTitles>Skills </NavTitles>
-        </Link>
-        <Link to="/contact" style={{ textDecoration: "none" }}>
-          <NavTitles>Contato </NavTitles>
-        </Link>
-      </NavPosition>
-    </NavHeader>
-  );
-};
+const Header = () => (
+  <NavHeader>
+    <NavLink className="brand" to="/" aria-label="Pietro Candido, voltar ao início">
+      <span className="brand-mark">PC<span>.</span></span>
+      <span className="brand-name">PIETRO CANDIDO</span>
+    </NavLink>
+    <NavPosition aria-label="Navegação principal">
+      {links.map(({ to, label, end }) => (
+        <li key={to}>
+          <NavLink to={to} end={end} className={({ isActive }) => isActive ? "active" : ""}>
+            <NavTitles>{label}</NavTitles>
+          </NavLink>
+        </li>
+      ))}
+    </NavPosition>
+  </NavHeader>
+);
 
 export default Header;
