@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../Button";
 import { FormDeddy, FormContainer, Input, Area, Span } from "./style";
 import { useForm } from "react-hook-form";
@@ -22,10 +22,25 @@ const schema = yup.object({
 const Form = () => {
   const sendingRef = useRef(false);
   const [sendStatus, setSendStatus] = useState({ type: "", message: "" });
-  const { register, handleSubmit, setFocus, formState: { errors, isSubmitting }, reset } = useForm({
-    resolver: yupResolver(schema), mode: "onBlur", defaultValues: { name: "", email: "", number: "", subject: "", message: "" }
+  const [isOnline, setIsOnline] = useState(() => typeof navigator === "undefined" || navigator.onLine);
+  useEffect(() => {
+    const updateConnection = () => setIsOnline(navigator.onLine);
+    window.addEventListener("online", updateConnection);
+    window.addEventListener("offline", updateConnection);
+    return () => {
+      window.removeEventListener("online", updateConnection);
+      window.removeEventListener("offline", updateConnection);
+    };
+  }, []);
+  const { register, handleSubmit, setFocus, formState: { errors, isSubmitting, touchedFields, dirtyFields }, reset } = useForm({
+    resolver: yupResolver(schema), mode: "onChange", reValidateMode: "onChange", defaultValues: { name: "", email: "", number: "", subject: "", message: "" }
   });
+  const fieldFeedback = (field) => !errors[field] && touchedFields[field] && dirtyFields[field];
   const sendEmail = async data => {
+    if (!navigator.onLine) {
+      setSendStatus({ type: "error", message: "Você está sem conexão. Verifique a internet e tente novamente." });
+      return;
+    }
     if (sendingRef.current) return;
     sendingRef.current = true;
     setSendStatus({ type: "loading", message: "Enviando sua mensagem..." });
@@ -48,7 +63,8 @@ const Form = () => {
       setSendStatus({ type: "success", message: "Envio aceito pelo serviço de e-mail. Verifique a caixa de entrada e o spam." });
     } catch (error) {
       console.error("Falha no envio de contato", error);
-      const details = error?.text || error?.message || "Erro desconhecido";
+      const details = !navigator.onLine ? "Sem conexão com a internet" : (error?.status === 429 ? "Limite de envios atingido. Aguarde antes de tentar novamente" : "Verifique sua conexão ou tente novamente mais tarde");
+      // O erro técnico completo fica apenas no console, sem expor dados internos ao visitante.
       toast.error("Não foi possível enviar agora. Você também pode entrar em contato por e-mail.", { theme: "dark" });
       setSendStatus({ type: "error", message: `Falha no envio: ${details}. Confira o EmailJS ou tente novamente.` });
     } finally {
@@ -68,30 +84,31 @@ const Form = () => {
           <h2>Conte sua ideia</h2>
           <p>Preencha os campos abaixo. Respondo assim que possível.</p>
         </div>
+        {!isOnline && <div className="connection-warning" role="alert">Você está offline. Seus dados permanecem no formulário; reconecte-se para enviar.</div>}
         <FormContainer>
           <div>
             <label htmlFor="contact-name">Seu nome <span aria-hidden="true">*</span></label>
-            <Input id="contact-name" maxLength={90} required autoComplete="name" placeholder="Como posso chamar você?" aria-invalid={!!errors.name} aria-describedby={errors.name ? "name-error" : undefined} {...register("name")} />
+            <Input id="contact-name" data-valid={fieldFeedback("name") ? "true" : undefined} maxLength={90} required autoComplete="name" placeholder="Como posso chamar você?" aria-invalid={!!errors.name} aria-describedby={errors.name ? "name-error" : undefined} {...register("name")} />
             {errors.name && <Span id="name-error" role="alert">{errors.name.message}</Span>}
           </div>
           <div>
             <label htmlFor="contact-email">Seu e-mail <span aria-hidden="true">*</span></label>
-            <Input id="contact-email" maxLength={254} required type="email" autoComplete="email" placeholder="voce@exemplo.com" aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} {...register("email")} />
+            <Input id="contact-email" data-valid={fieldFeedback("email") ? "true" : undefined} maxLength={254} required type="email" autoComplete="email" placeholder="voce@exemplo.com" aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} {...register("email")} />
             {errors.email && <Span id="email-error" role="alert">{errors.email.message}</Span>}
           </div>
           <div>
             <label htmlFor="contact-phone">Telefone <small>(opcional)</small></label>
-            <Input id="contact-phone" maxLength={20} type="tel" autoComplete="tel" inputMode="tel" placeholder="(21) 99999-9999" aria-invalid={!!errors.number} aria-describedby={errors.number ? "phone-error" : undefined} {...register("number")} />
+            <Input id="contact-phone" data-valid={fieldFeedback("number") ? "true" : undefined} maxLength={20} type="tel" autoComplete="tel" inputMode="tel" placeholder="(21) 99999-9999" aria-invalid={!!errors.number} aria-describedby={errors.number ? "phone-error" : undefined} {...register("number")} />
             {errors.number && <Span id="phone-error" role="alert">{errors.number.message}</Span>}
           </div>
           <div>
             <label htmlFor="contact-subject">Assunto <span aria-hidden="true">*</span></label>
-            <Input id="contact-subject" maxLength={120} required placeholder="Ex.: Projeto de site" aria-invalid={!!errors.subject} aria-describedby={errors.subject ? "subject-error" : undefined} {...register("subject")} />
+            <Input id="contact-subject" data-valid={fieldFeedback("subject") ? "true" : undefined} maxLength={120} required placeholder="Ex.: Projeto de site" aria-invalid={!!errors.subject} aria-describedby={errors.subject ? "subject-error" : undefined} {...register("subject")} />
             {errors.subject && <Span id="subject-error" role="alert">{errors.subject.message}</Span>}
           </div>
           <div>
             <label htmlFor="contact-message">Sua mensagem <span aria-hidden="true">*</span></label>
-            <Area id="contact-message" maxLength={3000} required rows="5" placeholder="Conte o que você precisa, seus objetivos e como posso ajudar..." aria-invalid={!!errors.message} aria-describedby={errors.message ? "message-error" : undefined} {...register("message")} />
+            <Area id="contact-message" data-valid={fieldFeedback("message") ? "true" : undefined} maxLength={3000} required rows="5" placeholder="Conte o que você precisa, seus objetivos e como posso ajudar..." aria-invalid={!!errors.message} aria-describedby={errors.message ? "message-error" : undefined} {...register("message")} />
             {errors.message && <Span id="message-error" role="alert">{errors.message.message}</Span>}
           </div>
         </FormContainer>
@@ -101,7 +118,7 @@ const Form = () => {
             <span>{sendStatus.message}</span>
           </div>
         )}
-        <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Enviando mensagem..." : "Enviar mensagem ↗"}</Button>
+        <Button type="submit" disabled={isSubmitting || !isOnline}>{isSubmitting ? "Enviando mensagem..." : "Enviar mensagem ↗"}</Button>
         <p className="form-note">* Campos obrigatórios. Se preferir, escreva diretamente para <a href="mailto:pietro.candido.work@gmail.com">meu e-mail</a>.</p>
       </FormDeddy>
       <ToastContainer position="top-right" autoClose={5000} newestOnTop closeOnClick pauseOnHover theme="dark" style={{ zIndex: 9999 }} />
