@@ -20,7 +20,8 @@ const Shell = styled.div`
   .latitude, .longitude { fill: none; stroke: #4fff84; stroke-width: .7; opacity: .57; }
   .back { opacity: .15; stroke: #288a45; }
   .point { fill: #b0ffbc; }
-  .outline { fill: none; stroke: #5dff89; stroke-width: 1.4; opacity: .82; }\n  svg { cursor: grab; } svg:active { cursor: grabbing; }
+  .outline { fill: none; stroke: #5dff89; stroke-width: 1.4; opacity: .82; }
+  svg { cursor: grab; } svg:active { cursor: grabbing; }
   .label { position: absolute; bottom: 4%; left: 50%; transform: translateX(-50%); color: #6fe99a; font: 600 10px "Space Grotesk",sans-serif; letter-spacing: .23em; white-space: nowrap; pointer-events: none; }
 `;
 
@@ -29,7 +30,11 @@ const project = (lat, lon, rotation, tilt, pitch = 0) => {
   const a = lat * RAD, b = lon * RAD + rotation;
   const x = Math.cos(a) * Math.sin(b);
   const y = Math.sin(a), z = Math.cos(a) * Math.cos(b);
-  const y1 = y * Math.cos(tilt) - z * Math.sin(tilt);\n  const z1 = y * Math.sin(tilt) + z * Math.cos(tilt);\n  const x2 = x * Math.cos(pitch) + z1 * Math.sin(pitch);\n  const z2 = -x * Math.sin(pitch) + z1 * Math.cos(pitch);\n  return { x: 200 + 143 * x2, y: 200 - 143 * y1, z: z2 };
+  const y1 = y * Math.cos(tilt) - z * Math.sin(tilt);
+  const z1 = y * Math.sin(tilt) + z * Math.cos(tilt);
+  const x2 = x * Math.cos(pitch) + z1 * Math.sin(pitch);
+  const z2 = -x * Math.sin(pitch) + z1 * Math.cos(pitch);
+  return { x: 200 + 143 * x2, y: 200 - 143 * y1, z: z2 };
 };
 const segments = (points, front) => {
   const result = [];
@@ -44,7 +49,9 @@ const segments = (points, front) => {
 
 const MatrixGlobe = () => {
   const [rotation, setRotation] = useState(.35);
-  const [tilt, setTilt] = useState(-.16);\n  const [pitch, setPitch] = useState(0);\n  const target = useRef({ pitch: 0, tilt: -.16, yaw: .004 });
+  const [tilt, setTilt] = useState(-.16);
+  const [pitch, setPitch] = useState(0);
+  const target = useRef({ pitch: 0, tilt: -.16, yaw: .004 });
   const velocity = useRef(.004);
   const lastX = useRef(null);
 
@@ -54,7 +61,9 @@ const MatrixGlobe = () => {
     let previous = 0;
     const tick = time => {
       if (time - previous >= 30) {
-        setRotation(value => value + velocity.current * Math.min((time - previous) / 16.7, 3));\n        setTilt(value => value + (target.current.tilt - value) * .07);\n        setPitch(value => value + (target.current.pitch - value) * .07);
+        setRotation(value => value + velocity.current * Math.min((time - previous) / 16.7, 3));
+        setTilt(value => value + (target.current.tilt - value) * .07);
+        setPitch(value => value + (target.current.pitch - value) * .07);
         previous = time;
         velocity.current += (.004 - velocity.current) * .012;
       }
