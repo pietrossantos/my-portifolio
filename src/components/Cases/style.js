@@ -13,7 +13,7 @@ export const BoxCases = styled.div`
   align-items: center;
   padding: 15px 15px;
   margin: 20px 0;
-  border-radius: 50%;
+  border-radius: 24px;
 
   &::before {
     content: "";
@@ -44,8 +44,11 @@ export const BoxCases = styled.div`
   }
 `;
 export const CostumizeCases = styled.img`
-  width: 450px;
-  height: 275px;
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+  aspect-ratio: 450 / 275;
+  object-fit: contain;
   cursor: pointer;
 `;
 
@@ -56,17 +59,20 @@ export const SectionCase = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 40px;
-  border-radius: 50%;
+  border-radius: 20px;
   padding: 22px;
+  width: 100%;
+  max-width: 520px;
 `;
 export const DescriptionCase = styled.div`
   position: relative;
-  width: 450px;
+  width: 100%;
+  max-width: 450px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  border-radius: 50%;
+  border-radius: 20px;
 `;
 
 export const LinkExternal = styled(BiLinkExternal)`
