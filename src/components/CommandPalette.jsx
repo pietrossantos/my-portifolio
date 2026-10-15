@@ -51,6 +51,8 @@ export default function CommandPalette() {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(0);
   const inputRef = useRef(null);
+  const dialogRef = useRef(null);
+  const previousFocusRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
   const results = commands.filter(command =>
@@ -62,7 +64,10 @@ export default function CommandPalette() {
     const onShortcut = (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
-        setOpen(current => !current);
+        setOpen(current => {
+          if (!current) previousFocusRef.current = document.activeElement;
+          return !current;
+        });
       }
     };
     window.addEventListener("keydown", onShortcut);
@@ -72,13 +77,34 @@ export default function CommandPalette() {
   useEffect(() => { setOpen(false); }, [location.pathname]);
   useEffect(() => {
     if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     setQuery("");
     setSelected(0);
     inputRef.current?.focus();
     const onEscape = event => { if (event.key === "Escape") setOpen(false); };
     document.addEventListener("keydown", onEscape);
-    return () => document.removeEventListener("keydown", onEscape);
+    return () => {
+      document.removeEventListener("keydown", onEscape);
+      document.body.style.overflow = previousOverflow;
+      previousFocusRef.current?.focus?.();
+    };
   }, [open]);
+
+  const trapFocus = event => {
+    if (event.key !== "Tab") return;
+    const elements = dialogRef.current?.querySelectorAll('input, button:not([disabled])');
+    if (!elements?.length) return;
+    const first = elements[0];
+    const last = elements[elements.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
 
   const go = command => { navigate(command.path); setOpen(false); };
   const onKeys = event => {
@@ -89,18 +115,18 @@ export default function CommandPalette() {
 
   return (
     <>
-      <Trigger type="button" onClick={() => setOpen(true)} aria-label="Abrir menu de comandos">
+      <Trigger type="button" onClick={event => { previousFocusRef.current = event.currentTarget; setOpen(true); }} aria-label="Abrir menu de comandos">
         <span>⌘ Navegar</span><kbd>Ctrl K</kbd>
       </Trigger>
       {open && <Overlay onMouseDown={event => { if (event.target === event.currentTarget) setOpen(false); }}>
-        <Dialog role="dialog" aria-modal="true" aria-label="Menu de comandos">
+        <Dialog ref={dialogRef} role="dialog" aria-modal="true" aria-label="Menu de comandos" onKeyDown={trapFocus}>
           <div className="top"><span className="prompt">›_</span>
             <input ref={inputRef} value={query} onChange={event => { setQuery(event.target.value); setSelected(0); }} onKeyDown={onKeys} placeholder="Para onde vamos?" aria-label="Pesquisar páginas" />
             <span className="esc">ESC</span>
           </div>
-          <div className="results" role="listbox" aria-label="Páginas">
+          <div className="results" aria-label="Páginas">
             {results.length ? results.map((command, index) => (
-              <button key={command.path} type="button" className={`option ${index === selected ? "active" : ""}`} onMouseEnter={() => setSelected(index)} onClick={() => go(command)} role="option" aria-selected={index === selected}>
+              <button key={command.path} type="button" className={`option ${index === selected ? "active" : ""}`} onMouseEnter={() => setSelected(index)} onClick={() => go(command)} aria-current={index === selected ? "true" : undefined}>
                 <span><strong>{command.label}</strong><small>{command.description}</small></span><span className="arrow">↗</span>
               </button>
             )) : <div className="empty">Nenhum comando encontrado.</div>}
