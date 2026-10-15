@@ -23,11 +23,11 @@ const Contact = () => (
   <>
     <Header />
     <Layout>
-      <span className="eyebrow">Conexões / Oportunidades</span>
-      <h1>Vamos conversar?</h1>
-      <p className="intro">Estou aberto a oportunidades de desenvolvimento Front-end e novos desafios. Escolha o canal que preferir.</p>
+      <span className="eyebrow reveal">Conexões / Oportunidades</span>
+      <h1 className="reveal">Vamos conversar?</h1>
+      <p className="intro reveal">Estou aberto a oportunidades de desenvolvimento Front-end e novos desafios. Escolha o canal que preferir.</p>
       <div className="grid">
-        <section className="panel">
+        <section className="panel reveal">
           <h2>Onde me encontrar</h2>
           <div className="links">
             <div><span>E-mail</span><a href="mailto:pietro.candido.work@gmail.com">pietro.candido.work@gmail.com</a></div>
@@ -35,7 +35,7 @@ const Contact = () => (
             <div><span>GitHub</span><a href="https://github.com/pietrossantos" target="_blank" rel="noopener noreferrer">github.com/pietrossantos</a></div>
           </div>
         </section>
-        <section className="form" aria-label="Formulário de contato"><Form /></section>
+        <section className="form reveal" aria-label="Formulário de contato"><Form /></section>
       </div>
     </Layout>
   </>
