@@ -159,6 +159,7 @@ const Projects = () => {
     </Wrap>
     <ProjectDetailsModal project={selectedProject} onClose={closeDetails} />
   </>
-);
+  );
+};
 
 export default Projects;
