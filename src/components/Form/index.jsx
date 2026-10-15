@@ -8,9 +8,29 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import emailjs from "@emailjs/browser";
 
+const commonDomainTypos = {
+  "gail.com": "gmail.com",
+  "gmial.com": "gmail.com",
+  "gmai.com": "gmail.com",
+  "gmail.con": "gmail.com",
+  "hotnail.com": "hotmail.com",
+  "hotmai.com": "hotmail.com",
+  "outlok.com": "outlook.com",
+  "outlook.con": "outlook.com",
+  "yaho.com": "yahoo.com",
+};
+
 const schema = yup.object({
   name: yup.string().trim().min(2, "Digite pelo menos 2 caracteres").max(90).required("Informe seu nome"),
-  email: yup.string().trim().email("Informe um e-mail válido").required("Informe seu e-mail"),
+  email: yup.string().trim().required("Informe seu e-mail")
+    .email("Informe um e-mail válido")
+    .matches(/^[^\\s@]+@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$/, "Informe um domínio completo, como exemplo.com")
+    .test("common-domain-typos", function (value) {
+      if (!value || !value.includes("@")) return true;
+      const domain = value.split("@").pop().toLowerCase();
+      const suggestion = commonDomainTypos[domain];
+      return !suggestion || this.createError({ message: `Você quis dizer @${suggestion}?` });
+    }),
   number: yup.string().trim().test("phone", "Informe um telefone com DDD válido", value => {
     const digits = (value || "").replace(/\D/g, "");
     return !digits || ((digits.length === 10 || digits.length === 11) && /^[1-9]{2}/.test(digits));
