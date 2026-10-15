@@ -2,31 +2,44 @@ import { useEffect } from "react";
 
 export default function MotionObserver() {
   useEffect(() => {
-    if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    document.documentElement.classList.add("motion-enabled");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!("IntersectionObserver" in window) || reducedMotion.matches) return;
+
     const observed = new WeakSet();
     const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
+      for (const entry of entries) {
         if (entry.isIntersecting) {
           entry.target.classList.add("is-visible");
           observer.unobserve(entry.target);
         }
-      });
-    }, { threshold: .08, rootMargin: "0px 0px -35px 0px" });
-    const scan = () => document.querySelectorAll(".reveal").forEach(el => {
-      if (!observed.has(el)) {
-        observed.add(el);
-        observer.observe(el);
       }
+    }, { threshold: 0.12, rootMargin: "0px 0px -25px 0px" });
+
+    const scan = () => {
+      document.querySelectorAll(".reveal:not(.is-visible)").forEach(el => {
+        if (!observed.has(el)) {
+          observed.add(el);
+          observer.observe(el);
+        }
+      });
+    };
+
+    // Wait for initial layout/paint so elements already on screen animate too.
+    let firstFrame = requestAnimationFrame(() => {
+      document.documentElement.classList.add("motion-enabled");
+      scan();
     });
-    scan();
+
     const mutation = new MutationObserver(scan);
     mutation.observe(document.getElementById("root"), { childList: true, subtree: true });
+
     return () => {
+      cancelAnimationFrame(firstFrame);
       mutation.disconnect();
       observer.disconnect();
       document.documentElement.classList.remove("motion-enabled");
     };
   }, []);
+
   return null;
 }
