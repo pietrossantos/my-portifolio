@@ -29,6 +29,16 @@ const Wrap = styled.main`
   .eyebrow { color: #6ff28c; text-transform: uppercase; letter-spacing: .18em; font-size: 12px; font-weight: 700; }
   h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); color: #f4fcff; margin: 14px 0; letter-spacing: -.045em; }
   .intro { color: #b8cdbb; max-width: 720px; line-height: 1.8; margin-bottom: 42px; }
+  .search-wrap { margin: -8px 0 26px; }
+  .search-label { display: block; color: #b4e5bf; font: 600 13px "Oxanium", sans-serif; margin-bottom: 10px; }
+  .search-box { display: flex; align-items: center; gap: 12px; padding: 0 15px; border: 1px solid #367a4a; border-radius: 12px; background: rgba(7,25,13,.9); }
+  .search-box:focus-within { border-color: #85f4a3; box-shadow: 0 0 0 3px rgba(83,218,115,.12); }
+  .search-icon { color: #84e79e; font-size: 21px; }
+  .search-box input { flex: 1; min-width: 0; padding: 15px 0; border: 0; outline: 0; background: transparent; color: #effff1; font: 500 15px "Oxanium", sans-serif; }
+  .search-box input::placeholder { color: #829f8b; }
+  .clear-search { border: 0; background: transparent; color: #a9eeb9; cursor: pointer; padding: 8px; font: 600 12px "Oxanium", sans-serif; }
+  .empty-state { grid-column: 1 / -1; padding: 45px 22px; border: 1px dashed #3b7650; border-radius: 18px; background: rgba(11,38,19,.6); text-align: center; color: #b9d8c0; }
+  .empty-state button { margin-top: 14px; padding: 11px 17px; border: 1px solid #73e493; border-radius: 9px; background: #153c23; color: #d9ffe2; cursor: pointer; }
   .filters { display: flex; flex-wrap: wrap; gap: 10px; margin: -10px 0 18px; }
   .filter { padding: 10px 15px; border: 1px solid #306a42; border-radius: 100px; background: rgba(12,40,20,.75); color: #bce9c5; font: 600 13px "Oxanium", sans-serif; cursor: pointer; transition: border-color .2s, background .2s, color .2s; }
   .filter:hover, .filter:focus-visible { border-color: #84f4a2; color: #fff; }
@@ -81,8 +91,14 @@ const moveSpotlight = (event) => {
 
 const Projects = () => {
   const [activeFilter, setActiveFilter] = useState("Todos");
+  const [search, setSearch] = useState("");
   const currentFilter = filters.find(filter => filter.label === activeFilter) ?? filters[0];
-  const visibleProjects = projects.filter(currentFilter.matches);
+  const normalize = value => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR");
+  const normalizedSearch = normalize(search.trim());
+  const visibleProjects = projects.filter(project =>
+    currentFilter.matches(project) &&
+    normalize([project.title, project.category, project.description, ...project.tags].join(" ")).includes(normalizedSearch)
+  );
   return (
   <>
     <Header />
@@ -90,8 +106,34 @@ const Projects = () => {
       <span className="eyebrow reveal">Portfólio / Trabalhos selecionados</span>
       <h1 className="reveal">Projetos que contam minha história.</h1>
       <p className="intro reveal">Uma seleção de interfaces, desafios pessoais e experiências de desenvolvimento em equipe. Cada projeto representa uma etapa da minha evolução como desenvolvedor Front-end.</p>
+      <div className="search-wrap">
+        <label className="search-label" htmlFor="project-search">Buscar projetos</label>
+        <div className="search-box">
+          <span className="search-icon" aria-hidden="true">⌕</span>
+          <input id="project-search" type="search" value={search} onChange={event => setSearch(event.target.value)}
+            placeholder="Busque por projeto, tecnologia ou palavra-chave..." />
+          {search && <button type="button" className="clear-search" onClick={() => setSearch("")} aria-label="Limpar busca">Limpar ×</button>}
+        </div>
+      </div>
+      <div className="filters" role="group" aria-label="Filtrar projetos por tecnologia">
+        {filters.map(filter => (
+          <button key={filter.label} type="button" className="filter"
+            aria-pressed={activeFilter === filter.label}
+            onClick={() => setActiveFilter(filter.label)}>{filter.label}</button>
+        ))}
+      </div>
+      <p className="results-count" role="status" aria-live="polite">
+        {visibleProjects.length} {visibleProjects.length === 1 ? "projeto encontrado" : "projetos encontrados"}
+      </p>
       <div className="grid">
-        {projects.map((project) => (
+        {visibleProjects.length === 0 && (
+          <div className="empty-state">
+            <h2>Nenhum projeto encontrado.</h2>
+            <p>Tente outra palavra-chave ou selecione um filtro diferente.</p>
+            <button type="button" onClick={() => { setSearch(""); setActiveFilter("Todos"); }}>Limpar filtros e busca</button>
+          </div>
+        )}
+        {visibleProjects.map((project) => (
           <article className="card" key={project.title} onPointerMove={moveSpotlight}>
             {project.preview === "asteroid" ? <div className="art asteroid" role="img" aria-label="Ilustração de um asteroide monitorado em órbita"><svg viewBox="0 0 500 300" aria-hidden="true"><defs><radialGradient id="rock"><stop stopColor="#b5b9a6"/><stop offset="1" stopColor="#45544f"/></radialGradient></defs>{Array.from({length:36},(_,i)=><circle key={i} cx={(i*97+29)%500} cy={(i*53+17)%300} r={i%5===0?1.6:.7} fill="#b1ffe0" opacity=".55"/>)}<ellipse cx="250" cy="150" rx="177" ry="68" fill="none" stroke="#5ce6b1" strokeWidth="1.5" opacity=".65" transform="rotate(-21 250 150)"/><ellipse cx="250" cy="150" rx="130" ry="114" fill="none" stroke="#5ce6b1" strokeDasharray="4 8" opacity=".25"/><path d="M212 97L253 77 301 96 326 131 310 172 270 201 222 192 183 157 189 121Z" fill="url(#rock)" stroke="#c1c8bb" strokeWidth="2"/><path d="M213 101L239 121 230 152 197 148M254 79L262 119 297 127 324 131M232 154L265 180 270 199" fill="none" stroke="#394841" strokeWidth="3"/><ellipse cx="242" cy="135" rx="15" ry="10" fill="#384942"/><ellipse cx="281" cy="164" rx="11" ry="7" fill="#394841"/><text x="44" y="44" fill="#a1f7ce" fontSize="12" letterSpacing="3">ASTEROID TRACKER</text><text x="303" y="263" fill="#a1f7ce" fontSize="10" letterSpacing="2">ORBITAL SCAN / 001</text></svg></div> : project.preview ? <div className={`art ${project.preview}`}><img src={project.image} alt={`Imagem original do projeto ${project.title}`} loading="lazy" /></div> : project.image ? <img className="image" src={project.image} alt={`Prévia do projeto ${project.title}`} loading="lazy" /> : <div className="placeholder" aria-hidden="true"><span>{project.title}</span></div>}
             <div className="content">
