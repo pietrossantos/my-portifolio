@@ -21,6 +21,13 @@ const Wrap = styled.main`
   h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); color: #f4fcff; margin: 14px 0; letter-spacing: -.045em; }
   .intro { color: #b8cdbb; max-width: 720px; line-height: 1.8; margin-bottom: 42px; }
   .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .card { position: relative; isolation: isolate; --mouse-x: 50%; --mouse-y: 50%; }
+  .card::before { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: inherit; opacity: 0; background: radial-gradient(380px circle at var(--mouse-x) var(--mouse-y), rgba(100,255,149,.14), transparent 70%); transition: opacity .35s ease; }
+  .card::after { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; border-radius: inherit; opacity: 0; box-shadow: inset 0 0 0 1px rgba(120,255,163,.45), 0 0 25px rgba(58,210,102,.09); transition: opacity .35s ease; }
+  @media (hover: hover) and (pointer: fine) {
+    .card:hover::before, .card:hover::after { opacity: 1; }
+    .card.reveal.is-visible:hover { transform: translateY(-6px); }
+  }
   .card { border: 1px solid #2a5b39; border-radius: 22px; overflow: hidden; background: linear-gradient(145deg, #102719, #07150c); box-shadow: 0 12px 40px rgba(0,0,0,.17); transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
   .card:hover { transform: translateY(-5px); border-color: #67eb8c; box-shadow: 0 18px 50px rgba(28,129,48,.15); }
   .image { display: block; width: 100%; height: 300px; object-fit: contain; object-position: center; padding: 18px; background: radial-gradient(circle at center, #15391e, #08170e 72%); border-bottom: 1px solid #285c37; transition: transform .35s ease; }
@@ -47,8 +54,16 @@ const Wrap = styled.main`
   .secondary { border: 1px solid #3b7650; color: #d4f9dd; }
   .footnote { margin-top: 34px; color: #8da994; font-size: 13px; line-height: 1.7; }
   @media (max-width: 740px) { .grid { grid-template-columns: 1fr; } .image { height: 260px; padding: 12px; } .description { min-height: 0; } }
-  @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .card, .card::before, .card::after { transition: none; } .card:hover, .card.reveal.is-visible:hover { transform: none; } }
+
 `;
+
+const moveSpotlight = (event) => {
+  if (event.pointerType === "touch") return;
+  const rect = event.currentTarget.getBoundingClientRect();
+  event.currentTarget.style.setProperty("--mouse-x", `${event.clientX - rect.left}px`);
+  event.currentTarget.style.setProperty("--mouse-y", `${event.clientY - rect.top}px`);
+};
 
 const Projects = () => (
   <>
@@ -59,7 +74,7 @@ const Projects = () => (
       <p className="intro reveal">Uma seleção de interfaces, desafios pessoais e experiências de desenvolvimento em equipe. Cada projeto representa uma etapa da minha evolução como desenvolvedor Front-end.</p>
       <div className="grid">
         {projects.map((project) => (
-          <article className="card reveal" key={project.title}>
+          <article className="card reveal" key={project.title} onPointerMove={moveSpotlight}>
             {project.preview === "asteroid" ? <div className="art asteroid" role="img" aria-label="Ilustração de um asteroide monitorado em órbita"><svg viewBox="0 0 500 300" aria-hidden="true"><defs><radialGradient id="rock"><stop stopColor="#b5b9a6"/><stop offset="1" stopColor="#45544f"/></radialGradient></defs>{Array.from({length:36},(_,i)=><circle key={i} cx={(i*97+29)%500} cy={(i*53+17)%300} r={i%5===0?1.6:.7} fill="#b1ffe0" opacity=".55"/>)}<ellipse cx="250" cy="150" rx="177" ry="68" fill="none" stroke="#5ce6b1" strokeWidth="1.5" opacity=".65" transform="rotate(-21 250 150)"/><ellipse cx="250" cy="150" rx="130" ry="114" fill="none" stroke="#5ce6b1" strokeDasharray="4 8" opacity=".25"/><path d="M212 97L253 77 301 96 326 131 310 172 270 201 222 192 183 157 189 121Z" fill="url(#rock)" stroke="#c1c8bb" strokeWidth="2"/><path d="M213 101L239 121 230 152 197 148M254 79L262 119 297 127 324 131M232 154L265 180 270 199" fill="none" stroke="#394841" strokeWidth="3"/><ellipse cx="242" cy="135" rx="15" ry="10" fill="#384942"/><ellipse cx="281" cy="164" rx="11" ry="7" fill="#394841"/><text x="44" y="44" fill="#a1f7ce" fontSize="12" letterSpacing="3">ASTEROID TRACKER</text><text x="303" y="263" fill="#a1f7ce" fontSize="10" letterSpacing="2">ORBITAL SCAN / 001</text></svg></div> : project.preview ? <div className={`art ${project.preview}`}><img src={project.image} alt={`Imagem original do projeto ${project.title}`} loading="lazy" /></div> : project.image ? <img className="image" src={project.image} alt={`Prévia do projeto ${project.title}`} loading="lazy" /> : <div className="placeholder" aria-hidden="true"><span>{project.title}</span></div>}
             <div className="content">
               <span className="category">{project.category}</span>
