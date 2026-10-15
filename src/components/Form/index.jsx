@@ -21,21 +21,36 @@ const schema = yup.object({
 
 const Form = () => {
   const sendingRef = useRef(false);
+  const formStartedAt = useRef(Date.now());
   const [sendStatus, setSendStatus] = useState({ type: "", message: "" });
   const { register, handleSubmit, setFocus, formState: { errors, isSubmitting }, reset } = useForm({
-    resolver: yupResolver(schema), mode: "onBlur", defaultValues: { name: "", email: "", number: "", subject: "", message: "" }
+    resolver: yupResolver(schema), mode: "onBlur", defaultValues: { name: "", email: "", number: "", subject: "", message: "", website: "" }
   });
   const sendEmail = async data => {
     if (sendingRef.current) return;
+    // Honeypot e tempo mínimo: barreira básica contra bots, não substitui proteção no servidor.
+    if (data.website || Date.now() - formStartedAt.current < 2500) {
+      setSendStatus({ type: "error", message: "Aguarde alguns segundos e tente enviar novamente." });
+      return;
+    }
     sendingRef.current = true;
     setSendStatus({ type: "loading", message: "Enviando sua mensagem..." });
     try {
       await emailjs.send("service_fpz92le", "template_8082bd8", {
-        name: data.name.trim(), email: data.email.trim(), number: data.number.trim(),
-        subject: data.subject.trim(), message: data.message.trim(),
+        name: data.name.trim(),
+        from_name: data.name.trim(),
+        email: data.email.trim(),
+        from_email: data.email.trim(),
+        reply_to: data.email.trim(),
+        number: data.number.trim() || "Não informado",
+        phone: data.number.trim() || "Não informado",
+        subject: data.subject.trim(),
+        title: data.subject.trim(),
+        message: data.message.trim(),
       }, "lumHRW6doBVW8kgam");
       toast.success("Mensagem enviada! Obrigado pelo contato.", { theme: "dark" });
       reset();
+      formStartedAt.current = Date.now();
       setSendStatus({ type: "success", message: "Mensagem enviada com sucesso! Obrigado pelo contato." });
     } catch (error) {
       console.error("Falha no envio de contato", error);
@@ -53,6 +68,7 @@ const Form = () => {
   return (
     <>
       <FormDeddy noValidate onSubmit={handleSubmit(sendEmail, onInvalid)} aria-busy={isSubmitting}>
+        <div className="honeypot" aria-hidden="true"><label htmlFor="contact-website">Deixe este campo vazio</label><input id="contact-website" type="text" autoComplete="off" tabIndex={-1} {...register("website")} /></div>
         <div className="form-heading">
           <span className="form-eyebrow">CONTATO DIRETO</span>
           <h2>Conte sua ideia</h2>
